@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 #ifdef __WIN32__
-#include <windows.h> 
+#include <windows.h>
 #else
 #include <unistd.h>
 #endif
@@ -47,6 +47,19 @@ DATA Podio[3];
 DATA TabelaGeral[32];
 
 typedef struct{
+    char equipes[30];
+    int id;
+    int pontos;
+    int vitorias;
+    int empates;
+    int derrotas;
+    int gols;
+    int golsSofridos;
+    int saldo;
+}COPIA;
+COPIA TIMES[33];
+
+typedef struct{
     char dataJogo[25];
     char horaJogo[10];
     char localJogo[60];
@@ -69,7 +82,6 @@ void armazenarDadosTimes();
 void cadastrarTimesAutomatico();
 void exibirGrupos();
 void cadastroFaseDeGrupos();
-void armazenarTabelaGeral(int tamanho, DATA *Fase);
 void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo);
 void cadastroPartidasManualmente(int tamanho, PLAY *Partida, DATA *Fase);
 void realizarFaseDeGrupos();
@@ -86,7 +98,6 @@ void realizarDisputaTerceiro();
 void cadastrarFinal();
 void realizarFinal();
 void exibirPodio();
-void ordenarTabelaGeral(int variavelOrdenar);
 void exibirTabelaGeral();
 void processarJogos();
 void ordenaGrupoDecrescente(int t1, int t2);
@@ -95,83 +106,45 @@ void ordenaGrupoGols(int t3, int t4);
 void  ordenaGrupoGolsSofridos(int t3, int t4);
 
 int main(){
+    system("color F");
+
 
     setlocale(LC_ALL, "Portuguese");
-    int opcao, i;
+    int opcao;
 
     zerarVariaveis(32, CadastroGrupos);
     system("cls");
 
     do{
-        printf( C_BLUE "\t*** MENU PRINCIPAL ***\n\n" NONE);
-        printf(C_RED" 0) SAIR.\n"NONE);
-        if(cadastroTimesConcluido == 0){
-            printf(" 1) CADASTRO DE TIMES.\n");
-        }
-        else{
-            printf(C_GREEN" 1) CADASTRO DE TIMES.\n" NONE);
-        }
-        if(faseGruposRealizada == 0){
-            printf(" 2) FASE DE GRUPOS.\n");
-        }
-        else{
-            printf(C_GREEN" 2) FASE DE GRUPOS.\n" NONE);
-        }
-        if(oitavasRealizada == 0){
-            printf(" 3) OITAVAS DE FINAL.\n");
-        }
-        else{
-            printf(C_GREEN" 3) OITAVAS DE FINAL.\n" NONE);
-        }
-        if(quartasRealizada == 0){
-            printf(" 4) QUARTAS DE FINAL.\n");
-        }
-        else{
-            printf(C_GREEN" 4) QUARTAS DE FINAL.\n" NONE);
-        }
-        if(semifinaisRealizada == 0){
-             printf(" 5) SEMIFINAIS.\n");
-        }
-        else{
-            printf(C_GREEN" 5) SEMIFINAIS.\n" NONE);
-        }
-        if(terceiroRealizada == 0){
-            printf(" 6) DISPUTA PELO 3° LUGAR.\n");
-        }
-        else{
-            printf(C_GREEN" 6) DISPUTA PELO 3° LUGAR.\n" NONE);
-        }
-        if(finalRealizada == 0){
-            printf(" 7) FINAL.\n");
-        }
-        else{
-            printf(C_GREEN" 7) FINAL.\n" NONE);
-        }
-        if(faseGruposRealizada != 0){
-            printf(C_YELLOW" 8) ESTATISTICAS.\n\n"NONE);
-        }
-        else{
-            printf("\n");
-        }
+        printf( "\t*** MENU PRINCIPAL ***\n\n");
+        printf(" 0) SAIR.\n");
+        printf(" 1) CADASTRO DE TIMES.\n");
+        printf(" 2) FASE DE GRUPOS.\n");
+        printf(" 3) OITAVAS DE FINAL.\n");
+        printf(" 4) QUARTAS DE FINAL.\n");
+        printf(" 5) SEMIFINAIS.\n");
+        printf(" 6) DISPUTA PELO 3° LUGAR.\n");
+        printf(" 7) FINAL.\n");
+        printf(" 8) ESTATÍSTICAS.\n\n");
 
         do {
             printf("OPÇÃO: ");
             fflush(stdin);
             scanf("%d", &opcao);
         }while (opcao!=0 && opcao!=1 && opcao!=2 && opcao!=3 && opcao!=4 && opcao!=5 && opcao!=6 && opcao!=7 && opcao!=8);
-        
+
         switch (opcao){
             case 0: break;
             case 1: {
 
                 if(cadastroTimesConcluido == 0){
                     system("cls");
-                    printf(C_CYAN"\n\t**** CADASTRO DE TIMES***\n" NONE);
-                    printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                    printf("\n\t**** CADASTRO DE TIMES***\n");
+                    printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                     printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                     do {
-                        printf(C_YELLOW "OPÇÃO: " NONE);
+                        printf( "OPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
                     }while (opcao!='1' && opcao!='2');
@@ -179,30 +152,22 @@ int main(){
                     if (opcao=='1'){
                         cadastrarTimesAutomatico();
                         cadastroTimesConcluido = 1;
-
-                        for(i = 0; i < 32; i++){
-                            strcpy(TabelaGeral[i].equipes, CadastroGrupos[i].equipes);
-                        }
                     }
                     else if(opcao == '2'){
                         cadastrarTimesManual();
                         cadastroTimesConcluido = 1;
-
-                        for(i = 0; i < 32; i++){
-                            strcpy(TabelaGeral[i].equipes, CadastroGrupos[i].equipes);
-                        }
                     }
                 }
                 else{
                     erro1("DE TIMES");
-                }       
+                }
 
             };break;
             case 2: {
 
                 do{
                     system("cls");
-                    printf(C_CYAN"\n\t**** FASE DE GRUPOS ***\n\n" NONE);
+                    printf("\n\t**** FASE DE GRUPOS ***\n\n");
                     printf(" 0 - MENU ANTERIOR.\n");
                     printf(" 1 - EXIBIR GRUPOS.\n");
                     printf(" 2 - CADASTRAR JOGOS DA FASE DE GRUPOS.\n");
@@ -233,12 +198,12 @@ int main(){
                                 erro2("DE TIMES");
                             }
                             else if(faseGruposCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
@@ -254,8 +219,8 @@ int main(){
                             }
                             else{
                                 erro1("DA FASE DE GRUPOS");
-                            }     
-                            
+                            }
+
 
                         };break;
                         case '3': {
@@ -268,7 +233,6 @@ int main(){
                             }
                             else{
                                 realizarFaseDeGrupos();
-                                armazenarDadosTimes(32, CadastroGrupos);
                                 faseGruposRealizada = 1;
                             }
                         };break;
@@ -293,13 +257,13 @@ int main(){
                         default: break;
                     }
                 }while(opcao != '0');
-              
+
             };break;
             case 3: {
 
                 do{
                     system("cls");
-                    printf(C_CYAN"\n\t**** OITAVAS DE FINAL ***\n\n" NONE);
+                    printf("\n\t**** OITAVAS DE FINAL ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
@@ -319,12 +283,12 @@ int main(){
                                 erro3("FASE DE GRUPOS");
                             }
                             else if(oitavasCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
@@ -340,7 +304,7 @@ int main(){
                             }
                             else{
                                 erro1("DAS OITAVAS DE FINAL");
-                            }     
+                            }
                         };break;
                         case '2': {
                             system("cls");
@@ -352,7 +316,6 @@ int main(){
                             }
                             else{
                                 realizarOitavas();
-                                armazenarTabelaGeral(16, Oitavas);
                                 oitavasRealizada = 1;
                             }
                         };break;
@@ -368,12 +331,12 @@ int main(){
                         default: break;
                     }
                 }while(opcao != '0');
-                
+
             };break;
             case 4:
                  do{
                     system("cls");
-                    printf(C_CYAN"\n\t****  QUARTAS DE FINAL ***\n\n" NONE);
+                    printf("\n\t****  QUARTAS DE FINAL ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
@@ -393,18 +356,18 @@ int main(){
                                 erro5("OITAVAS DE FINAL");
                             }
                             else if(quartasCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(4, PartidasQuartas, 3);
+                                    cadastroPartidasAutomatico(4, PartidasQuartas, 2);
                                     quartasCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -447,7 +410,7 @@ int main(){
             case 5:
                  do{
                     system("cls");
-                    printf(C_CYAN"\n\t****  SEMIFINAL  ***\n\n" NONE);
+                    printf("\n\t****  SEMIFINAL  ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
@@ -467,18 +430,18 @@ int main(){
                                 erro5("QUARTAS DE FINAL");
                             }
                             else if(semifinaisCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(2, PartidasSemifinais, 4);
+                                    cadastroPartidasAutomatico(2, PartidasSemifinais, 2);
                                     semifinaisCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -521,7 +484,7 @@ int main(){
             case 6:
                 do{
                     system("cls");
-                    printf(C_CYAN"\n\t****  DISPUTA PELO TERCEIRO LUGAR  ***\n\n" NONE);
+                    printf("\n\t****  DISPUTA PELO TERCEIRO LUGAR  ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGO.\n");
                     printf(" 2 - REALIZAR JOGO.\n\n");
@@ -540,18 +503,18 @@ int main(){
                                 erro5("SEMIFINAIS");
                             }
                             else if(terceiroCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(1, PartidaTerceiro, 5);
+                                    cadastroPartidasAutomatico(2, PartidaTerceiro, 2);
                                     terceiroCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -584,7 +547,7 @@ int main(){
             case 7:
                 do{
                     system("cls");
-                    printf(C_CYAN"\n\t****  DISPUTA DA FINAL  ***\n\n" NONE);
+                    printf("\n\t****  DISPUTA DA FINAL  ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGO.\n");
                     printf(" 2 - REALIZAR JOGO.\n");
@@ -604,18 +567,18 @@ int main(){
                                 erro3("DISPUTA PELO TERCEIRO LUGAR");
                             }
                             else if(finalCadastrada == 0){
-                                printf(C_CYAN"\n\t**** CADASTRO DE INFORMAÇÕES***\n" NONE);
-                                printf(C_YELLOW "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n" NONE);
+                                printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
+                                printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
                                 printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
                                 do {
-                                    printf(C_YELLOW "OPÇÃO: " NONE);
+                                    printf( "OPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico( 1, PartidaFinal, 6);
+                                    cadastroPartidasAutomatico( 2, PartidaFinal, 2);
                                     finalCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -655,51 +618,16 @@ int main(){
             ;break;
 
 
-            case 8: 
-
-                do{
-                    system("cls");
-                    printf(C_CYAN"\n\t****  ESTATISTICAS DA COPA  ***\n\n" NONE);
-                    printf(" 0 - SAIR.\n");
-                    printf(" 1 - SALDO DE GOLS.\n");
-                    printf(" 2 - GOLS FEITOS.\n");
-                    printf(" 3 - GOLS SOFRIDOS.\n");
-                    printf(" 4 - VITORIAS\n");
-                    printf(" 5 - DERROTAS.\n");
-                    printf(" 6 - EMPATES.\n\n");
-
-                    do {
-                        printf("OPÇÃO: ");
-                        fflush(stdin);
-                        scanf("%c", &opcao);
-                    }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4' && opcao!= '5' && opcao!= '6');
-                    
-                    system("cls");
-
-                    switch(opcao){
-                        case '1': {
-                            ordenarTabelaGeral(1);
-                            exibirTabelaGeral();
-                        }break;
-                        case '2': {
-                            ordenarTabelaGeral(2);
-                            exibirTabelaGeral();
-                        }break;
-
-                        default: break;
-                    }
-
-                }while(opcao != '0'); 
-
-            ;break;
-
-            default: break;
+            case 8:
+            exibirTabelaGeral();
+            break;
+            break;
         }
 
         system("cls");
 
     }while(opcao != 0);
-    
+
     return 0;
 }
 
@@ -707,7 +635,7 @@ void zerarVariaveis(int tamanho, DATA *FaseZerar){
      int i = 0;
 
     for(i = 0; i < tamanho; i++){
-        FaseZerar[i].id = 0;
+        FaseZerar[i].id = i;
         FaseZerar[i].pontos = 0;
         FaseZerar[i].vitorias = 0;
         FaseZerar[i].empates = 0;
@@ -717,7 +645,7 @@ void zerarVariaveis(int tamanho, DATA *FaseZerar){
         FaseZerar[i].saldo = 0;
 	}
 }
-
+//************************************************************************************************* QUAL O OBJETIVO DESSA FUNÇÃO?
 void armazenarDadosTimes(){
     FILE *data = fopen("dadosTimes.txt", "wb");
     int i;
@@ -736,24 +664,12 @@ void armazenarDadosTimes(){
 
 	fclose(geral);
 }
-
-void armazenarTabelaGeral(int tamanho, DATA *Fase){
-    int i;
-
-    for(i = 0; i < tamanho; i++){
-        TabelaGeral[Fase[i].id].saldo += Fase[i].saldo;
-        TabelaGeral[Fase[i].id].gols += Fase[i].gols;
-        TabelaGeral[Fase[i].id].golsSofridos += Fase[i].golsSofridos;
-        TabelaGeral[Fase[i].id].vitorias += Fase[i].vitorias;
-        TabelaGeral[Fase[i].id].derrotas += Fase[i].derrotas;
-        TabelaGeral[Fase[i].id].empates += Fase[i].empates;
-    }
-}
+//********************************************************************************************************************
 
 void cadastrarTimesManual(){
     int i, o;
 
-    printf("\t *** Cadastro Manual de Times ***\n\n"); 
+    printf("\t *** Cadastro Manual de Times ***\n\n");
 
     for(i = 0, o = 1; i < 32; i += 1, o++){
         fflush(stdin);
@@ -769,7 +685,7 @@ void cadastrarTimesAutomatico(){
 
     FILE *team = fopen("Times.txt", "rb");
     int i, len;
-    
+
     for(i = 0; i < 32; i++){
         fgets(CadastroGrupos[i].equipes, 50, team);
         len = strlen(CadastroGrupos[i].equipes) - 1;
@@ -865,167 +781,18 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         armazenarDadosTimes();
         system("cls");
     }
-    else if(arquivo == 3){
-        FILE *group = fopen("LocaisQuartas.txt", "rb");
-        FILE *day = fopen("DatasQuartas.txt", "rb");
-        FILE *hour = fopen("HorasQuartas.txt", "rb");
 
-         for(i = 0; i < tamanho; i++){
-            fgets(Partida[i].localJogo, 50, group);
-            len = strlen(Partida[i].localJogo) - 1;
-            if (Partida[i].localJogo[len] == '\n')
-                Partida[i].localJogo[len] = '\0';
-
-            fgets(Partida[i].dataJogo, 50, day);
-            len = strlen(Partida[i].dataJogo) - 1;
-            if (Partida[i].dataJogo[len] == '\n')
-                Partida[i].dataJogo[len] = '\0';
-
-            fgets(Partida[i].horaJogo, 50, hour);
-            len = strlen(Partida[i].horaJogo) - 1;
-            if (Partida[i].horaJogo[len] == '\n')
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        for(i = 0; i < tamanho; i++){
-            len = strlen(Partida[i].localJogo) - 1;
-                Partida[i].localJogo[len] = '\0';
-            len = strlen(Partida[i].dataJogo) - 1;
-                Partida[i].dataJogo[len] = '\0';
-            len = strlen(Partida[i].horaJogo) - 1;
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        fclose(group);
-        fclose(day);
-        fclose(hour);
-        armazenarDadosTimes();
-        system("cls");
-    }
-     else if(arquivo == 4){
-        FILE *group = fopen("LocaisSemifinais.txt", "rb");
-        FILE *day = fopen("DatasSemifinais.txt", "rb");
-        FILE *hour = fopen("HorasSemifinais.txt", "rb");
-
-         for(i = 0; i < tamanho; i++){
-            fgets(Partida[i].localJogo, 50, group);
-            len = strlen(Partida[i].localJogo) - 1;
-            if (Partida[i].localJogo[len] == '\n')
-                Partida[i].localJogo[len] = '\0';
-
-            fgets(Partida[i].dataJogo, 50, day);
-            len = strlen(Partida[i].dataJogo) - 1;
-            if (Partida[i].dataJogo[len] == '\n')
-                Partida[i].dataJogo[len] = '\0';
-
-            fgets(Partida[i].horaJogo, 50, hour);
-            len = strlen(Partida[i].horaJogo) - 1;
-            if (Partida[i].horaJogo[len] == '\n')
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        for(i = 0; i < tamanho; i++){
-            len = strlen(Partida[i].localJogo) - 1;
-                Partida[i].localJogo[len] = '\0';
-            len = strlen(Partida[i].dataJogo) - 1;
-                Partida[i].dataJogo[len] = '\0';
-            len = strlen(Partida[i].horaJogo) - 1;
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        fclose(group);
-        fclose(day);
-        fclose(hour);
-        armazenarDadosTimes();
-        system("cls");
-    }
-    else if(arquivo == 5){
-        FILE *group = fopen("LocalTerceiro.txt", "rb");
-        FILE *day = fopen("DataTerceiro.txt", "rb");
-        FILE *hour = fopen("HoraTerceiro.txt", "rb");
-
-         for(i = 0; i < tamanho; i++){
-            fgets(Partida[i].localJogo, 50, group);
-            len = strlen(Partida[i].localJogo) - 1;
-            if (Partida[i].localJogo[len] == '\n')
-                Partida[i].localJogo[len] = '\0';
-
-            fgets(Partida[i].dataJogo, 50, day);
-            len = strlen(Partida[i].dataJogo) - 1;
-            if (Partida[i].dataJogo[len] == '\n')
-                Partida[i].dataJogo[len] = '\0';
-
-            fgets(Partida[i].horaJogo, 50, hour);
-            len = strlen(Partida[i].horaJogo) - 1;
-            if (Partida[i].horaJogo[len] == '\n')
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        for(i = 0; i < tamanho; i++){
-            len = strlen(Partida[i].localJogo) - 1;
-                Partida[i].localJogo[len] = '\0';
-            len = strlen(Partida[i].dataJogo) - 1;
-                Partida[i].dataJogo[len] = '\0';
-            len = strlen(Partida[i].horaJogo) - 1;
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        fclose(group);
-        fclose(day);
-        fclose(hour);
-        armazenarDadosTimes();
-        system("cls");
-    }
-    else if(arquivo == 6){
-        FILE *group = fopen("LocalFinal.txt", "rb");
-        FILE *day = fopen("DataFinal.txt", "rb");
-        FILE *hour = fopen("HoraFinal.txt", "rb");
-
-         for(i = 0; i < tamanho; i++){
-            fgets(Partida[i].localJogo, 50, group);
-            len = strlen(Partida[i].localJogo) - 1;
-            if (Partida[i].localJogo[len] == '\n')
-                Partida[i].localJogo[len] = '\0';
-
-            fgets(Partida[i].dataJogo, 50, day);
-            len = strlen(Partida[i].dataJogo) - 1;
-            if (Partida[i].dataJogo[len] == '\n')
-                Partida[i].dataJogo[len] = '\0';
-
-            fgets(Partida[i].horaJogo, 50, hour);
-            len = strlen(Partida[i].horaJogo) - 1;
-            if (Partida[i].horaJogo[len] == '\n')
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        for(i = 0; i < tamanho; i++){
-            len = strlen(Partida[i].localJogo) - 1;
-                Partida[i].localJogo[len] = '\0';
-            len = strlen(Partida[i].dataJogo) - 1;
-                Partida[i].dataJogo[len] = '\0';
-            len = strlen(Partida[i].horaJogo) - 1;
-                Partida[i].horaJogo[len] = '\0';
-        }
-
-        fclose(group);
-        fclose(day);
-        fclose(hour);
-        armazenarDadosTimes();
-        system("cls");
-    }
-    
-    
 }
 
 void cadastroPartidasManualmente(int tamanho, PLAY *Partida, DATA *Fase){
 
     int i, j;
-    
+
     for(i = 0, j = 0; i < tamanho; i++, j += 2){
         system("cls");
-        printf(C_GREEN "    *** Informações das Partidas *** \n\n" NONE);
+        printf( "    *** Informações das Partidas *** \n\n");
         printf("\t     --- JOGO %d --- \n",i+1);
-        printf(C_CYAN "\n\t   %s  x  %s\n\n" NONE, Fase[j].equipes, Fase[j + 1].equipes);
+        printf( "\n\t   %s  x  %s\n\n", Fase[j].equipes, Fase[j + 1].equipes);
         printf("DIGITE A DATA: ");
     	fflush(stdin);
     	gets(Partida[i].dataJogo);
@@ -1045,10 +812,10 @@ void exibirGrupos(){
     char grupo = 'A';
     int i, j, k = 0;
 
-    printf(C_BLUE"\t *** Grupos ***\n\n"NONE);
+    printf("\t *** Grupos ***\n\n");
 
     for(i = 0; i < 32; i += 4, grupo++){
-        printf(C_RED "\n<< GRUPO %c >>\n" NONE, grupo );
+        printf( "\n<< GRUPO %c >>\n", grupo );
         for(j = 0; j <  4; j += 1, k++){
             printf(" %2d - %s\n", k + 1, CadastroGrupos[k].equipes);
         }
@@ -1057,7 +824,7 @@ void exibirGrupos(){
     printf("\n\n");
     system("pause");
     system("cls");
- 
+
 }
 
 void cadastroFaseDeGrupos(){
@@ -1070,12 +837,12 @@ void cadastroFaseDeGrupos(){
     k=1;
     c=0;
     for(i=0;i<8;i++,grupo++){
-        for(j=0;j<2;j++){	
-        	strcpy (FaseGrupos[t].dataJogo, " "); 
-        	strcpy (FaseGrupos[t].horaJogo, " "); 
-        	strcpy (FaseGrupos[t].localJogo, " "); 
+        for(j=0;j<2;j++){
+        	strcpy (FaseGrupos[t].dataJogo, " ");
+        	strcpy (FaseGrupos[t].horaJogo, " ");
+        	strcpy (FaseGrupos[t].localJogo, " ");
 
-        	printf(C_GREEN"    *** Informações das Partidas *** \n\n");
+        	printf("    *** Informações das Partidas *** \n\n");
             printf("\t  <<< GRUPO %c >>> \n",grupo);
             printf("\tRODADA 1 --- JOGO %d \n",t+1);
             printf("\n\t%s  x  %s\n\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
@@ -1105,13 +872,13 @@ void cadastroFaseDeGrupos(){
             c+=2;
         }
 
-        for(j=0;j<2;j++){	
-        	strcpy (FaseGrupos[t].dataJogo, " "); 
-        	strcpy (FaseGrupos[t].horaJogo, " "); 
-        	strcpy (FaseGrupos[t].localJogo, " "); 
+        for(j=0;j<2;j++){
+        	strcpy (FaseGrupos[t].dataJogo, " ");
+        	strcpy (FaseGrupos[t].horaJogo, " ");
+        	strcpy (FaseGrupos[t].localJogo, " ");
 
         	printf("    *** Informações das Partidas *** \n\n");
-            printf(C_GREEN "\t  <<< GRUPO %c >>> \n",grupo);
+            printf( "\t  <<< GRUPO %c >>> \n",grupo);
             printf("\tRODADA 2 --- JOGO %d \n",t+1);
             printf("\n\t%s  x  %s\n\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("DIGITE A DATA: ");
@@ -1140,13 +907,13 @@ void cadastroFaseDeGrupos(){
             k+=6;
         }
 
-        for(j=0;j<2;j++){	
+        for(j=0;j<2;j++){
         	strcpy (FaseGrupos[t].dataJogo, " "); // Limpando o lixo
         	strcpy (FaseGrupos[t].horaJogo, " "); // Limpando o lixo
         	strcpy (FaseGrupos[t].localJogo, " "); // Limpando o lixo
 
         	printf("    *** Informações das Partidas *** \n\n");
-            printf(C_GREEN "\t  <<< GRUPO %c >>> \n",grupo);
+            printf( "\t  <<< GRUPO %c >>> \n",grupo);
             printf("\tRODADA 3 --- JOGO %d \n",t+1);
             printf("\n\t%s  x  %s\n\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("DIGITE A DATA: ");
@@ -1167,7 +934,7 @@ void cadastroFaseDeGrupos(){
     }
 
     system("cls");
- 
+
 }
 
 void realizarFaseDeGrupos(){
@@ -1184,22 +951,22 @@ void realizarFaseDeGrupos(){
         CadastroGrupos[i].saldo = 0;
 	}
 
-    printf(C_CYAN"\n\t**** Realização das Partidas da Fase de Grupos ***\n" NONE);
-    printf(C_YELLOW "\n\nVOCÊ DESEJA INSERIR OS RESULTADOS DOS JOGOS AUTOMÁTICAMENTE OU MANUALMENTE?\n\n" NONE);
+    printf("\n\t**** Realização das Partidas da Fase de Grupos ***\n");
+    printf( "\n\nVOCÊ DESEJA INSERIR OS RESULTADOS DOS JOGOS AUTOMÁTICAMENTE OU MANUALMENTE?\n\n");
     printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
 
     do {
-    	printf(C_YELLOW "OPÇÃO: " NONE);
+    	printf( "OPÇÃO: ");
     	fflush(stdin);
     	scanf("%c", &opcao);
     }while (opcao!='1' && opcao!='2');
 
     if (opcao=='1'){
-       automatico = 1; 
-       srand(time(NULL)); 
+       automatico = 1;
+       srand(time(NULL));
     }
     else if(opcao == '2'){
-    	automatico = 0; 
+    	automatico = 0;
     }
 
     system("cls");
@@ -1211,10 +978,10 @@ void realizarFaseDeGrupos(){
    	for(i=0;i<8;i++,grupo++)
    	{
         for(j=0;j<2;j++)
-        {	
-            printf(C_BLUE "\t      <<< GRUPO %c >>> \n\n" NONE,grupo);
+        {
+            printf ("\t      <<< GRUPO %c >>> \n\n",grupo);
             printf("\t    RODADA 1 --- JOGO %d ",t+1);
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [0] x [0] %s >\n" NONE, CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
+            printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
             printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
@@ -1231,7 +998,7 @@ void realizarFaseDeGrupos(){
 	                scanf("%d", &gols2);
 	            }while (gols2>20 || gols2<0);
 
-	            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+	            printf( "\n\t< %s [%d] x [%d] %s >\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
                 usleep(500000);
 	            system("cls");
             }
@@ -1239,7 +1006,7 @@ void realizarFaseDeGrupos(){
             	gols1 = rand() % 7; // Sorteia os gols do time 1
             	gols2 = rand() % 7; // Sorteia os gols do time 2
 
-            	printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+            	printf( "\n\t< %s [%d] x [%d] %s >\n\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
                 system("pause");
 	            system("cls");
             }
@@ -1295,9 +1062,9 @@ void realizarFaseDeGrupos(){
         c+=2;
         }
         for(j=0;j<2;j++){
-    		printf(C_BLUE "\t      <<< GRUPO %c >>> \n\n" NONE,grupo);
+    		printf ("\t      <<< GRUPO %c >>> \n\n",grupo);
             printf("\t    RODADA 2 --- JOGO %d ",t+1);
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [0] x [0] %s >\n" NONE, CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
+            printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
             printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
@@ -1314,7 +1081,7 @@ void realizarFaseDeGrupos(){
 	                scanf("%d", &gols2);
 	            }while (gols2>20 || gols2<0);
 
-	            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+	            printf( "\n\t< %s [%d] x [%d] %s >\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
 	            usleep(500000);
                 system("cls");
             }
@@ -1322,7 +1089,7 @@ void realizarFaseDeGrupos(){
             	gols1 = rand() % 7;
             	gols2 = rand() % 7;
 
-            	printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+            	printf( "\n\t< %s [%d] x [%d] %s >\n\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
                 system("pause");
 	            system("cls");
             }
@@ -1361,7 +1128,7 @@ void realizarFaseDeGrupos(){
             c++;
         }
    }
- 
+
     system("cls");
 
    	grupo='A';
@@ -1374,9 +1141,9 @@ void realizarFaseDeGrupos(){
         k+=6;
         }
         for(j=0;j<2;j++){
-            printf(C_BLUE "\t      <<< GRUPO %c >>> \n\n" NONE,grupo);
+            printf ("\t      <<< GRUPO %c >>> \n\n",grupo);
             printf("\t    RODADA 3 --- JOGO %d ",t+1);
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [0] x [0] %s >\n" NONE, CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
+            printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
             printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
@@ -1393,7 +1160,7 @@ void realizarFaseDeGrupos(){
 	                scanf("%d", &gols2);
 	            }while (gols2>20 || gols2<0);
 
-	            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+	            printf( "\n\t< %s [%d] x [%d] %s >\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
 	            usleep(500000);
                 system("cls");
             }
@@ -1401,7 +1168,7 @@ void realizarFaseDeGrupos(){
             	gols1 = rand() % 7;
             	gols2 = rand() % 7;
 
-            	printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n\n" NONE, CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
+            	printf( "\n\t< %s [%d] x [%d] %s >\n\n", CadastroGrupos[c].equipes, gols1, gols2, CadastroGrupos[k].equipes);
                 system("pause");
 	            system("cls");
             }
@@ -1455,10 +1222,10 @@ void realizarFaseDeGrupos(){
 }
 
 void  ordenaGrupoDecrescente(int t1, int t2){
-   
+
     int i,j,temp = 0;
-    DATA temp1; 
-   
+    DATA temp1;
+
     for (  i = t1 ; i < t2   ; i ++){
         for ( j = i + 1; j < t2 ; j ++){
             if (CadastroGrupos[i].pontos  < CadastroGrupos[j].pontos ){
@@ -1467,18 +1234,18 @@ void  ordenaGrupoDecrescente(int t1, int t2){
                 CadastroGrupos[i].pontos = CadastroGrupos[j].pontos;
                 CadastroGrupos[i] = CadastroGrupos[j];
                 CadastroGrupos[j].pontos = temp;
-                CadastroGrupos[j] = temp1;    
+                CadastroGrupos[j] = temp1;
             }
-          
+
         }
     }
 }
 
 void  ordenaGrupoSaldo(int t3, int t4){
-   
+
     int i, j, tempX;
-    DATA temp2; 
-   
+    DATA temp2;
+
     for (  i = t3 ; i < t4   ; i ++){
         for ( j = i + 1; j < t4 ; j ++){
             if (CadastroGrupos[i].saldo  < CadastroGrupos[j].saldo){
@@ -1495,10 +1262,10 @@ void  ordenaGrupoSaldo(int t3, int t4){
 }
 
 void  ordenaGrupoGols(int t3, int t4){
-   
+
     int i, j, tempX;
-    DATA temp2; 
-   
+    DATA temp2;
+
     for (  i = t3 ; i < t4   ; i ++){
         for ( j = i + 1; j < t4 ; j ++){
             if (CadastroGrupos[i].gols  < CadastroGrupos[j].gols){
@@ -1515,10 +1282,10 @@ void  ordenaGrupoGols(int t3, int t4){
 }
 
 void  ordenaGrupoGolsSofridos(int t3, int t4){
-   
+
     int i, j, tempX;
-    DATA temp2; 
-   
+    DATA temp2;
+
     for (  i = t3 ; i < t4   ; i ++){
         for ( j = i + 1; j < t4 ; j ++){
             if (CadastroGrupos[i].golsSofridos > CadastroGrupos[j].golsSofridos){
@@ -1572,7 +1339,7 @@ void processarJogos(){
 
                 if(CadastroGrupos[i].gols == CadastroGrupos[i + 1].gols){
                     ordenaGrupoGolsSofridos(i, i + 2);
-                }    
+                }
 
             }
             else if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
@@ -1633,7 +1400,7 @@ void processarJogos(){
 
                 }
             }
-        } 
+        }
     }
 
     for(i = 0; i <= 32; i += 1){
@@ -1641,8 +1408,7 @@ void processarJogos(){
     }
 
     armazenarDadosTimes();
-    zerarVariaveis(16, Oitavas);
-    
+
     for(i = 0; i < 32; i += 8){
         Oitavas[j] = CadastroGrupos[i];
         j++;
@@ -1653,7 +1419,7 @@ void processarJogos(){
         Oitavas[j] = CadastroGrupos[i + 1];
         j++;
     }
-      
+
 }
 
 void exibirTabelaGrupos(){
@@ -1672,8 +1438,8 @@ void exibirTabelaGrupos(){
         printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
 
         for(i = j; i < j + 4; i += 1){
-            printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", CadastroGrupos[i].equipes, CadastroGrupos[i].pontos, CadastroGrupos[i].saldo, CadastroGrupos[i].gols, CadastroGrupos[i].golsSofridos, CadastroGrupos[i].vitorias, CadastroGrupos[i].derrotas, CadastroGrupos[i].empates);  
-            printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");     
+            printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", CadastroGrupos[i].equipes, CadastroGrupos[i].pontos, CadastroGrupos[i].saldo, CadastroGrupos[i].gols, CadastroGrupos[i].golsSofridos, CadastroGrupos[i].vitorias, CadastroGrupos[i].derrotas, CadastroGrupos[i].empates);
+            printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
         }
     }
 
@@ -1684,7 +1450,7 @@ void exibirTabelaGrupos(){
 void classificados(int quantidade, DATA *Classificados){
     int i;
 
-    printf(C_BLUE "\t<<< TIMES CLASSIFICADOS >>>\n\n" NONE);
+    printf ("\t<<< TIMES CLASSIFICADOS >>>\n\n");
     for(i = 0; i < quantidade; i++){
         printf("%2d - %s\n", i + 1, Classificados[i].equipes);
     }
@@ -1697,152 +1463,120 @@ void realizarOitavas(){
     int i, j = 0;
     int numJogo = 1;
     int penaltes1, penaltes2;
-    
-    
+    zerarVariaveis(16, Oitavas);
+
     for(i = 0, j = 0; i < 16; i += 2, numJogo++){
-      
+
         char opcao;
-       
-        do{ 
+
+        do{
         	system("cls");
          	system("color 0F");
-            printf(C_MAGENTA "\t*** REALIZAR JOGOS - OITAVAS DE FINAL ***\n" NONE);   
+            printf( "\t*** REALIZAR JOGOS - OITAVAS DE FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Oitavas[i].equipes, Oitavas[i].gols, Oitavas[i + 1].gols, Oitavas[i + 1].equipes);
+            printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, Oitavas[i].gols, Oitavas[i + 1].gols, Oitavas[i + 1].equipes);
             printf("\nDIA: %s",PartidasOitavas[numJogo - 1].dataJogo);
             printf("\nLOCAL: %s",PartidasOitavas[numJogo - 1].localJogo);
             printf("\nHORARIO: %s\n",PartidasOitavas[numJogo - 1].horaJogo);
-            
+
             printf("\n  -> Gols do(a) %s: ", strupr(Oitavas[i].equipes));
             fflush(stdin);
             scanf("%d", &Oitavas[i].gols);
             printf("  -> Gols do(a) %s: ", strupr(Oitavas[i + 1].equipes));
             fflush(stdin);
             scanf("%d", &Oitavas[i + 1].gols);
-         
-           printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Oitavas[i].equipes, Oitavas[i].gols, Oitavas[i + 1].gols, Oitavas[i + 1].equipes);
-            
-            printf(C_RED "\n  + Atualizar o placar - digite A." NONE);
-            printf(C_YELLOW "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n" NONE);
-            printf(C_GRAY "\n  ---> " NONE);
+
+           printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, Oitavas[i].gols, Oitavas[i + 1].gols, Oitavas[i + 1].equipes);
+
+            printf( "\n  + Atualizar o placar - digite A.");
+            printf( "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n");
+            printf( "\n  ---> ");
             fflush(stdin);
             scanf("%c", &opcao);
-            
+
             if(opcao != 'I' && opcao != 'i'){
                system("color C");
-               system("cls");    
+               system("cls");
          	}
-                   
+
     	}while(opcao != 'I' && opcao != 'i');
-       
+
         if((Oitavas[i].gols) >  (Oitavas[i + 1].gols)){
             Quartas[j] = Oitavas[i];
-
-            Oitavas[i].vitorias = 1;
-            Oitavas[i + 1].derrotas = 1;
-            Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
-            Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
-            Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
-            Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
-
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Oitavas[i].equipes));
+            printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
             printf("\n");
             system("pause");
-            system("cls");   
+            system("cls");
         }
-        else if((Oitavas[i + 1].gols) >  (Oitavas[i].gols)){ 
+        else if((Oitavas[i + 1].gols) >  (Oitavas[i].gols)){
             Quartas[j] = Oitavas[i + 1];
-
-            Oitavas[i + 1].vitorias = 1;
-            Oitavas[i].derrotas = 1;
-            Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
-            Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
-            Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
-            Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
-
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Oitavas[i + 1].equipes));
+            printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i + 1].equipes));
             printf("\n");
             system("pause");
-            system("cls");  
+            system("cls");
         }
         else {
             system("color 0F");
             system("cls");
             penaltes1 = 0;
-            penaltes2 = 0; 
-                  
-        	do{ 
-               system("cls"); 
+            penaltes2 = 0;
+
+        	do{
+               system("cls");
                 system("color 0F");
-                printf(C_MAGENTA"\t  *** DISPUTA POR PÊNALTES ***\n" NONE);
+                printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Oitavas[i].equipes, penaltes1, penaltes2, Oitavas[i + 1].equipes);
-            
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, penaltes1, penaltes2, Oitavas[i + 1].equipes);
+
                 printf("\n  -> Pênaltis convertidos pelo(a) %s: ", strupr(Oitavas[i].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes1);
                 printf("  -> Penaltis convertidos pelo(a) %s: ", strupr(Oitavas[i + 1].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes2);
-         
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Oitavas[i].equipes, penaltes1, penaltes2, Oitavas[i + 1].equipes);
 
-                printf(C_RED"\n  + Atualizar o placar - digite A." NONE);
-                printf(C_YELLOW "\n  = Cobrança de Pênaltis Concluída - digite S.\n" NONE);
-                printf(C_GRAY "\n  ---> " NONE);
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, penaltes1, penaltes2, Oitavas[i + 1].equipes);
+
+                printf("\n  + Atualizar o placar - digite A.");
+                printf( "\n  = Cobrança de Pênaltis Concluída - digite S.\n");
+                printf( "\n  ---> ");
                 fflush(stdin);
                 scanf("%c", &opcao);
-            
+
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
-                    system("cls");       
+                    system("cls");
                 }
-               
+
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
-      
+
             if((penaltes1) >  (penaltes2)){
                 Quartas[j] = Oitavas[i];
-
-                Oitavas[i].vitorias = 1;
-                Oitavas[i + 1].derrotas = 1;
-                Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
-                Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
-                Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
-                Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
-
                 j++;
 
-                printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Oitavas[i].equipes));
-                printf("\n");
-                system("pause");
-                system("cls");  
-            }
-            else if((penaltes2) >  (penaltes1)){
-                Quartas[j] = Oitavas[i + 1];
-
-                Oitavas[i + 1].vitorias = 1;
-                Oitavas[i].derrotas = 1;
-                Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
-                Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
-                Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
-                Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
-
-                j++;
-
-                printf(C_GREEN BOLD"\n> O(A) %s FOI CLASSIFICADO(A) <\n" NONE, strupr(Oitavas[i + 1].equipes));
+                printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
-            }     
+            }
+            else if((penaltes2) >  (penaltes1)){
+                Quartas[j] = Oitavas[i + 1];
+                j++;
+
+                printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Oitavas[i + 1].equipes));
+                printf("\n");
+                system("pause");
+                system("cls");
+            }
         }
-         
+
         system("color 0F");
         system("cls");
-        
+
     }
- 
+
 }
 
 void realizarQuartas(){
@@ -1850,20 +1584,17 @@ void realizarQuartas(){
     int numJogo = 1;
     int penaltes1, penaltes2;
     zerarVariaveis(8, Quartas);
-    
+
     for(i = 0, j = 0; i < 8; i += 2, numJogo++){
-      
+
         char opcao;
-       
-        do{ 
+
+        do{
         	system("cls");
          	system("color 0F");
-            printf(C_MAGENTA "\t*** REALIZAR JOGOS - QUARTAS DE FINAL ***\n" NONE);   
+            printf( "\t*** REALIZAR JOGOS - OITAVAS DE FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
-            printf("\nDIA: %s",PartidasQuartas[numJogo - 1].dataJogo);
-            printf("\nLOCAL: %s",PartidasQuartas[numJogo - 1].localJogo);
-            printf("\nHORARIO: %s\n",PartidasQuartas[numJogo - 1].horaJogo);
+            printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Quartas[i].equipes));
             fflush(stdin);
@@ -1871,98 +1602,98 @@ void realizarQuartas(){
             printf("  -> Gols do(a) %s: ", strupr(Quartas[i + 1].equipes));
             fflush(stdin);
             scanf("%d", &Quartas[i + 1].gols);
-         
-           printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
-            
-            printf(C_RED "\n  + Atualizar o placar - digite A." NONE);
-            printf(C_YELLOW "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n" NONE);
-            printf(C_GRAY "\n  ---> " NONE);
+
+           printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
+
+            printf( "\n  + Atualizar o placar - digite A.");
+            printf( "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n");
+            printf( "\n  ---> ");
             fflush(stdin);
             scanf("%c", &opcao);
-            
+
             if(opcao != 'I' && opcao != 'i'){
                system("color C");
-               system("cls");    
+               system("cls");
          	}
-                   
+
     	}while(opcao != 'I' && opcao != 'i');
-       
+
         if((Quartas[i].gols) >  (Quartas[i + 1].gols)){
             Semifinais[j] = Quartas[i];
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Quartas[i].equipes));
+            printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i].equipes));
             printf("\n");
             system("pause");
-            system("cls");   
+            system("cls");
         }
-        else if((Quartas[i + 1].gols) >  (Quartas[i].gols)){ 
+        else if((Quartas[i + 1].gols) >  (Quartas[i].gols)){
             Semifinais[j] = Quartas[i + 1];
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Quartas[i + 1].equipes));
+            printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i + 1].equipes));
             printf("\n");
             system("pause");
-            system("cls");  
+            system("cls");
         }
         else {
             system("color 0F");
             system("cls");
             penaltes1 = 0;
-            penaltes2 = 0; 
-                  
-        	do{ 
-               system("cls"); 
+            penaltes2 = 0;
+
+        	do{
+               system("cls");
                 system("color 0F");
-                printf(C_MAGENTA"\t  *** DISPUTA POR PÊNALTES ***\n" NONE);
+                printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Quartas[i].equipes, penaltes1, penaltes2, Quartas[i + 1].equipes);
-            
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, penaltes1, penaltes2, Quartas[i + 1].equipes);
+
                 printf("\n  -> Pênaltis convertidos pelo(a) %s: ", strupr(Quartas[i].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes1);
                 printf("  -> Penaltis convertidos pelo(a) %s: ", strupr(Quartas[i + 1].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes2);
-         
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Quartas[i].equipes, penaltes1, penaltes2, Quartas[i + 1].equipes);
 
-                printf(C_RED"\n  + Atualizar o placar - digite A." NONE);
-                printf(C_YELLOW "\n  = Cobrança de Pênaltis Concluída - digite S.\n" NONE);
-                printf(C_GRAY "\n  ---> " NONE);
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, penaltes1, penaltes2, Quartas[i + 1].equipes);
+
+                printf("\n  + Atualizar o placar - digite A.");
+                printf( "\n  = Cobrança de Pênaltis Concluída - digite S.\n");
+                printf( "\n  ---> ");
                 fflush(stdin);
                 scanf("%c", &opcao);
-            
+
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
-                    system("cls");       
+                    system("cls");
                 }
-               
+
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
-      
+
             if((penaltes1) >  (penaltes2)){
                 Semifinais[j] = Quartas[i];
                 j++;
 
-                printf(C_GREEN BOLD"\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n" NONE, strupr(Quartas[i].equipes));
+                printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i].equipes));
                 printf("\n");
                 system("pause");
-                system("cls");  
+                system("cls");
             }
             else if((penaltes2) >  (penaltes1)){
                 Semifinais[j] = Quartas[i + 1];
                 j++;
 
-                printf(C_GREEN BOLD"\n> O(A) %s FOI CLASSIFICADO(A) <\n" NONE, strupr(Quartas[i + 1].equipes));
+                printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Quartas[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
-            }     
+            }
         }
-         
+
         system("color 0F");
         system("cls");
-        
+
     }
- 
+
 }
 
 void realizarSemifinais(){
@@ -1970,20 +1701,17 @@ void realizarSemifinais(){
     int numJogo = 1;
     int penaltes1, penaltes2;
     zerarVariaveis(4, Semifinais);
-    
+
     for(i = 0, j = 0; i < 4; i += 2, numJogo++){
-      
+
         char opcao;
-       
-        do{ 
+
+        do{
         	system("cls");
          	system("color 0F");
-            printf(C_MAGENTA "\t*** REALIZAR JOGOS - SEMIFINAIS ***\n" NONE);   
+            printf( "\t*** REALIZAR JOGOS - SEMIFINAIS ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
-            printf("\nDIA: %s",PartidasSemifinais[numJogo - 1].dataJogo);
-            printf("\nLOCAL: %s",PartidasSemifinais[numJogo - 1].localJogo);
-            printf("\nHORARIO: %s\n",PartidasSemifinais[numJogo - 1].horaJogo);
+            printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Semifinais[i].equipes));
             fflush(stdin);
@@ -1991,102 +1719,102 @@ void realizarSemifinais(){
             printf("  -> Gols do(a) %s: ", strupr(Semifinais[i + 1].equipes));
             fflush(stdin);
             scanf("%d", &Semifinais[i + 1].gols);
-         
-           printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
-            
-            printf(C_RED "\n  + Atualizar o placar - digite A." NONE);
-            printf(C_YELLOW "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n" NONE);
-            printf(C_GRAY "\n  ---> " NONE);
+
+           printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
+
+            printf( "\n  + Atualizar o placar - digite A.");
+            printf( "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n");
+            printf( "\n  ---> ");
             fflush(stdin);
             scanf("%c", &opcao);
-            
+
             if(opcao != 'I' && opcao != 'i'){
                system("color C");
-               system("cls");    
+               system("cls");
          	}
-                   
+
     	}while(opcao != 'I' && opcao != 'i');
-       
+
         if((Semifinais[i].gols) >  (Semifinais[i + 1].gols)){
             Final[j] = Semifinais[i];
             DisputaTerceiro[j] = Semifinais[i + 1];
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s É FINALISTA <<<\n" NONE, strupr(Semifinais[i].equipes));
+            printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i].equipes));
             printf("\n");
             system("pause");
-            system("cls");   
+            system("cls");
         }
-        else if((Semifinais[i + 1].gols) >  (Semifinais[i].gols)){ 
+        else if((Semifinais[i + 1].gols) >  (Semifinais[i].gols)){
             Final[j] = Semifinais[i + 1];
             DisputaTerceiro[j] = Semifinais[i];
             j++;
-            printf(C_GREEN BOLD"\n    >>> O(A) %s É FINALISTA <<<\n" NONE, strupr(Semifinais[i + 1].equipes));
+            printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i + 1].equipes));
             printf("\n");
             system("pause");
-            system("cls");  
+            system("cls");
         }
         else {
             system("color 0F");
             system("cls");
             penaltes1 = 0;
-            penaltes2 = 0; 
-                  
-        	do{ 
-               system("cls"); 
+            penaltes2 = 0;
+
+        	do{
+               system("cls");
                 system("color 0F");
-                printf(C_MAGENTA"\t  *** DISPUTA POR PÊNALTES ***\n" NONE);
+                printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Semifinais[i].equipes, penaltes1, penaltes2, Semifinais[i + 1].equipes);
-            
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, penaltes1, penaltes2, Semifinais[i + 1].equipes);
+
                 printf("\n  -> Pênaltis convertidos pelo(a) %s: ", strupr(Semifinais[i].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes1);
                 printf("  -> Penaltis convertidos pelo(a) %s: ", strupr(Semifinais[i + 1].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes2);
-         
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Semifinais[i].equipes, penaltes1, penaltes2, Semifinais[i + 1].equipes);
 
-                printf(C_RED"\n  + Atualizar o placar - digite A." NONE);
-                printf(C_YELLOW "\n  = Cobrança de Pênaltis Concluída - digite S.\n" NONE);
-                printf(C_GRAY "\n  ---> " NONE);
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, penaltes1, penaltes2, Semifinais[i + 1].equipes);
+
+                printf("\n  + Atualizar o placar - digite A.");
+                printf( "\n  = Cobrança de Pênaltis Concluída - digite S.\n");
+                printf( "\n  ---> ");
                 fflush(stdin);
                 scanf("%c", &opcao);
-            
+
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
-                    system("cls");       
+                    system("cls");
                 }
-               
+
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
-      
+
             if((penaltes1) >  (penaltes2)){
                 Final[j] = Semifinais[i];
                 DisputaTerceiro[j] = Semifinais[i + 1];
                 j++;
 
-                printf(C_GREEN BOLD"\n    >>> O(A) %s É FINALISTA <<<\n" NONE, strupr(Semifinais[i].equipes));
+                printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i].equipes));
                 printf("\n");
                 system("pause");
-                system("cls");  
+                system("cls");
             }
             else if((penaltes2) >  (penaltes1)){
                 Final[j] = Semifinais[i + 1];
                 DisputaTerceiro[j] = Semifinais[i];
                 j++;
 
-                printf(C_GREEN BOLD"\n> O(A) %s É FINALISTA <\n" NONE, strupr(Semifinais[i + 1].equipes));
+                printf( "\n> O(A) %s É FINALISTA <\n", strupr(Semifinais[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
-            }     
+            }
         }
-         
+
         system("color 0F");
         system("cls");
-        
+
     }
- 
+
 }
 
 void realizarDisputaTerceiro(){
@@ -2094,20 +1822,17 @@ void realizarDisputaTerceiro(){
     int numJogo = 1;
     int penaltes1, penaltes2;
     zerarVariaveis(2, DisputaTerceiro);
-    
+
     for(i = 0, j = 0; i < 2; i += 2, numJogo++){
-      
+
         char opcao;
-       
-        do{ 
+
+        do{
         	system("cls");
          	system("color 0F");
-            printf(C_MAGENTA "\t*** REALIZAR JOGO - DISPUTA PELO 3° LUGAR ***\n" NONE);   
+            printf( "\t*** REALIZAR JOGO - DISPUTA PELO 3° LUGAR ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
-            printf("\nDIA: %s",PartidaTerceiro[numJogo - 1].dataJogo);
-            printf("\nLOCAL: %s",PartidaTerceiro[numJogo - 1].localJogo);
-            printf("\nHORARIO: %s\n",PartidaTerceiro[numJogo - 1].horaJogo);
+            printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
 
             printf("\n  -> Gols do(a) %s: ", strupr(DisputaTerceiro[i].equipes));
             fflush(stdin);
@@ -2115,100 +1840,100 @@ void realizarDisputaTerceiro(){
             printf("  -> Gols do(a) %s: ", strupr(DisputaTerceiro[i + 1].equipes));
             fflush(stdin);
             scanf("%d", &DisputaTerceiro[i + 1].gols);
-         
-           printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
-            
-            printf(C_RED "\n  + Atualizar o placar - digite A." NONE);
-            printf(C_YELLOW "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n" NONE);
-            printf(C_GRAY "\n  ---> " NONE);
+
+           printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
+
+            printf( "\n  + Atualizar o placar - digite A.");
+            printf( "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n");
+            printf( "\n  ---> ");
             fflush(stdin);
             scanf("%c", &opcao);
-            
+
             if(opcao != 'I' && opcao != 'i'){
                system("color C");
-               system("cls");    
+               system("cls");
          	}
-                   
+
     	}while(opcao != 'I' && opcao != 'i');
-       
+
         if((DisputaTerceiro[i].gols) >  (DisputaTerceiro[i + 1].gols)){
             Podio[2] = DisputaTerceiro[i];
             j++;
 
-            printf(C_GREEN BOLD"\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n" NONE, strupr(DisputaTerceiro[i].equipes));
+            printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i].equipes));
             printf("\n");
             system("pause");
-            system("cls");   
+            system("cls");
         }
-        else if((DisputaTerceiro[i + 1].gols) >  (DisputaTerceiro[i].gols)){ 
+        else if((DisputaTerceiro[i + 1].gols) >  (DisputaTerceiro[i].gols)){
             Podio[2] = DisputaTerceiro[i + 1];
             j++;
 
-            printf(C_GREEN BOLD"\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n" NONE, strupr(DisputaTerceiro[i + 1].equipes));
+            printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i + 1].equipes));
             printf("\n");
             system("pause");
-            system("cls");  
+            system("cls");
         }
         else {
             system("color 0F");
             system("cls");
             penaltes1 = 0;
-            penaltes2 = 0; 
-                  
-        	do{ 
-               system("cls"); 
+            penaltes2 = 0;
+
+        	do{
+               system("cls");
                 system("color 0F");
-                printf(C_MAGENTA"\t  *** DISPUTA POR PÊNALTES ***\n" NONE);
+                printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,DisputaTerceiro[i].equipes, penaltes1, penaltes2, DisputaTerceiro[i + 1].equipes);
-                
+                printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, penaltes1, penaltes2, DisputaTerceiro[i + 1].equipes);
+
                 printf("\n  -> Pênaltis convertidos pelo(a) %s: ", strupr(DisputaTerceiro[i].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes1);
                 printf("  -> Penaltis convertidos pelo(a) %s: ", strupr(DisputaTerceiro[i + 1].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes2);
-         
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,DisputaTerceiro[i].equipes, penaltes1, penaltes2, DisputaTerceiro[i + 1].equipes);
 
-                printf(C_RED"\n  + Atualizar o placar - digite A." NONE);
-                printf(C_YELLOW "\n  = Cobrança de Pênaltis Concluída - digite S.\n" NONE);
-                printf(C_GRAY "\n  ---> " NONE);
+                printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, penaltes1, penaltes2, DisputaTerceiro[i + 1].equipes);
+
+                printf("\n  + Atualizar o placar - digite A.");
+                printf( "\n  = Cobrança de Pênaltis Concluída - digite S.\n");
+                printf( "\n  ---> ");
                 fflush(stdin);
                 scanf("%c", &opcao);
-            
+
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
-                    system("cls");       
+                    system("cls");
                 }
-               
+
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
-      
+
             if((penaltes1) >  (penaltes2)){
                 Podio[2] = DisputaTerceiro[i];
                 j++;
 
-                printf(C_GREEN BOLD"\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n" NONE, strupr(DisputaTerceiro[i].equipes));
+                printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i].equipes));
                 printf("\n");
                 system("pause");
-                system("cls");  
+                system("cls");
             }
             else if((penaltes2) >  (penaltes1)){
                 Podio[2] = DisputaTerceiro[i + 1];
                 j++;
 
-                printf(C_GREEN BOLD"\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n" NONE, strupr(DisputaTerceiro[i + 1].equipes));
+                printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
-            }     
+            }
         }
-         
+
         system("color 0F");
         system("cls");
-        
+
     }
- 
+
 }
 
 void realizarFinal(){
@@ -2216,20 +1941,17 @@ void realizarFinal(){
     int numJogo = 1;
     int penaltes1, penaltes2;
     zerarVariaveis(2, Final);
-    
+
     for(i = 0, j = 0; i < 2; i += 2, numJogo++){
-      
+
         char opcao;
-       
-        do{ 
+
+        do{
         	system("cls");
          	system("color 0F");
-            printf(C_MAGENTA "\t*** REALIZAR JOGO - FINAL ***\n" NONE);   
+            printf( "\t*** REALIZAR JOGO - FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
-            printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
-            printf("\nDIA: %s",PartidaFinal[numJogo - 1].dataJogo);
-            printf("\nLOCAL: %s",PartidaFinal[numJogo - 1].localJogo);
-            printf("\nHORARIO: %s\n",PartidaFinal[numJogo - 1].horaJogo);
+            printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Final[i].equipes));
             fflush(stdin);
@@ -2237,170 +1959,327 @@ void realizarFinal(){
             printf("  -> Gols do(a) %s: ", strupr(Final[i + 1].equipes));
             fflush(stdin);
             scanf("%d", &Final[i + 1].gols);
-         
-           printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
-            
-            printf(C_RED "\n  + Atualizar o placar - digite A." NONE);
-            printf(C_YELLOW "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n" NONE);
-            printf(C_GRAY "\n  ---> " NONE);
+
+           printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
+
+            printf( "\n  + Atualizar o placar - digite A.");
+            printf( "\n  = Ir para o próximo jogo ou decisão por pênaltis - digite I.\n");
+            printf( "\n  ---> ");
             fflush(stdin);
             scanf("%c", &opcao);
-            
+
             if(opcao != 'I' && opcao != 'i'){
                system("color C");
-               system("cls");    
+               system("cls");
          	}
-                   
+
     	}while(opcao != 'I' && opcao != 'i');
-       
+
         if((Final[i].gols) >  (Final[i + 1].gols)){
             Podio[j] = Final[i];
             j++;
             Podio[j] = Final[i + 1];
 
-            printf(C_GREEN BOLD"\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n" NONE, strupr(Final[i].equipes));
+            printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i].equipes));
             printf("\n");
             system("pause");
-            system("cls");   
+            system("cls");
         }
-        else if((Final[i + 1].gols) >  (Final[i].gols)){ 
+        else if((Final[i + 1].gols) >  (Final[i].gols)){
             Podio[j] = Final[i + 1];
             j++;
             Podio[j] = Final[i];
 
-            printf(C_GREEN BOLD"\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n" NONE, strupr(Final[i + 1].equipes));
+            printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i + 1].equipes));
             printf("\n");
             system("pause");
-            system("cls");  
+            system("cls");
         }
         else {
             system("color 0F");
             system("cls");
             penaltes1 = 0;
-            penaltes2 = 0; 
-                  
-        	do{ 
-               system("cls"); 
+            penaltes2 = 0;
+
+        	do{
+               system("cls");
                 system("color 0F");
-                printf(C_MAGENTA"\t  *** DISPUTA POR PÊNALTES ***\n" NONE);
+                printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Final[i].equipes, penaltes1, penaltes2, Final[i + 1].equipes);
-            
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, penaltes1, penaltes2, Final[i + 1].equipes);
+
                 printf("\n  -> Pênaltis convertidos pelo(a) %s: ", strupr(Final[i].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes1);
                 printf("  -> Penaltis convertidos pelo(a) %s: ", strupr(Final[i + 1].equipes));
                 fflush(stdin);
                 scanf("%d", &penaltes2);
-         
-                printf(C_BLACK BG_CYAN BOLD"\n\t< %s [%d] x [%d] %s >\n" NONE,Final[i].equipes, penaltes1, penaltes2, Final[i + 1].equipes);
 
-                printf(C_RED"\n  + Atualizar o placar - digite A." NONE);
-                printf(C_YELLOW "\n  = Cobrança de Pênaltis Concluída - digite S.\n" NONE);
-                printf(C_GRAY "\n  ---> " NONE);
+                printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, penaltes1, penaltes2, Final[i + 1].equipes);
+
+                printf("\n  + Atualizar o placar - digite A.");
+                printf( "\n  = Cobrança de Pênaltis Concluída - digite S.\n");
+                printf( "\n  ---> ");
                 fflush(stdin);
                 scanf("%c", &opcao);
-            
+
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
-                    system("cls");       
+                    system("cls");
                 }
-               
+
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
-      
+
             if((penaltes1) >  (penaltes2)){
                 Podio[j] = Final[i];
                 j++;
                 Podio[j] = Final[i + 1];
 
-                printf(C_GREEN BOLD"\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n" NONE, strupr(Final[i].equipes));
+                printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i].equipes));
                 printf("\n");
                 system("pause");
-                system("cls");  
+                system("cls");
             }
             else if((penaltes2) >  (penaltes1)){
                 Podio[j] = Final[i + 1];
                 j++;
                 Podio[j] = Final[i];
 
-                printf(C_GREEN BOLD"\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n" NONE, strupr(Final[i + 1].equipes));
+                printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
-            }     
+            }
         }
-         
+
         system("color 0F");
         system("cls");
-        
+
     }
- 
+
 }
 
 void exibirPodio(){
 
-    printf(C_BLUE "\t<<< PÓDIO DA COPA >>>\n\n" NONE);
-    printf(C_GREEN " -> SELEÇÃO CAMPEÃ: %s\n" NONE, Podio[0].equipes);
-    printf(C_MAGENTA " -> SELEÇÃO VICE-CAMPEÃ: %s\n" NONE, Podio[1].equipes);
-    printf(C_RED " -> SELEÇÃO TERCEIRA-COLOCADA: %s\n" NONE, Podio[2].equipes);
+    printf ("\t<<< PÓDIO DA COPA >>>\n\n");
+    printf( " -> SELEÇÃO CAMPEÃ: %s\n", Podio[0].equipes);
+    printf( " -> SELEÇÃO VICE-CAMPEÃ: %s\n", Podio[1].equipes);
+    printf( " -> SELEÇÃO TERCEIRA-COLOCADA: %s\n", Podio[2].equipes);
 
     printf("\n");
     system("pause");
 }
 
-void ordenarTabelaGeral(int variavelOrdenar){
-     
-    int i,j,temp = 0;
-    DATA temp1; 
+void exibirTabelaGeral()
+{
+int i;
+int j;
+int numero;
 
-    if(variavelOrdenar == 1){
-        for (  i = 0 ; i < 32   ; i ++){
-            for ( j = i + 1; j < 32 ; j ++){
-                if (TabelaGeral[i].saldo  < TabelaGeral[j].saldo ){
-                    temp = TabelaGeral[i].saldo;
-                    temp1 = TabelaGeral[i];
-                    TabelaGeral[i].saldo = TabelaGeral[j].saldo;
-                    TabelaGeral[i] = TabelaGeral[j];
-                    TabelaGeral[j].saldo = temp;
-                    TabelaGeral[j] = temp1;    
-                }
-            
-            }
-        }
+    for(i=0;i<32;i++)
+    {
+        strcpy(TIMES[i].equipes,CadastroGrupos[i].equipes);
+        TIMES[i].derrotas=CadastroGrupos[i].derrotas;
+        TIMES[i].empates=CadastroGrupos[i].empates;
+        TIMES[i].gols=CadastroGrupos[i].gols;
+        TIMES[i].golsSofridos=CadastroGrupos[i].golsSofridos;
+        TIMES[i].id=CadastroGrupos[i].id;
+        TIMES[i].pontos=CadastroGrupos[i].pontos;
+        TIMES[i].saldo=CadastroGrupos[i].saldo;
+        TIMES[i].vitorias=CadastroGrupos[i].vitorias;
     }
-    else if(variavelOrdenar == 2){
-        for (  i = 0 ; i < 32   ; i ++){
-            for ( j = i + 1; j < 32 ; j ++){
-                if (TabelaGeral[i].gols  < TabelaGeral[j].gols ){
-                    temp = TabelaGeral[i].gols;
-                    temp1 = TabelaGeral[i];
-                    TabelaGeral[i].gols = TabelaGeral[j].gols;
-                    TabelaGeral[i] = TabelaGeral[j];
-                    TabelaGeral[j].gols = temp;
-                    TabelaGeral[j] = temp1;    
-                }
-            
-            }
-        }
-    }
-   
-}
-
-void exibirTabelaGeral(){
     system("cls");
-    int i, j;
 
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
-    printf("|                         .::Estatísticas::.                        |\n");
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
-    printf("|       TIME       |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
+    do
+    {
+    printf("COMO DESEJA ORDENAR A TABELA GERAL:\n\n");
+    printf("TECLE 0 - PARA VOLTAR:\n\n");
+    printf("TECLE 1 - PARA ORDENAR POR SALDO DE GOLS:\n\n");
+    printf("TECLE 2 - PARA ORDENAR POR GOLS FEITOS:\n\n");
+    printf("TECLE 3 - PARA ORDENAR POR GOLS SOFRIDOS:\n\n");
+    printf("TECLE 4 - PARA ORDENAR POR VITORIAS\n\n");
+    printf("TECLE 5 - PARA ORDENAR POR DERROTAS\n\n");
+    printf("TECLE 6 - PARA ORDENAR POR EMPATES:\n\n");
 
-    for(j = 0; j < 32; j += 1){
-        printf("|  %-15s |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TabelaGeral[j].equipes,TabelaGeral[j].saldo, TabelaGeral[j].gols, TabelaGeral[j].golsSofridos, TabelaGeral[j].vitorias, TabelaGeral[j].derrotas, TabelaGeral[j].empates);  
-        printf("+------------------+--------+-------+-------+-------+-------+-------+\n");     
-    }
+    scanf("%d",&numero);
+    system("cls");
 
-    printf("\n\n");
-    system("pause");
+        switch(numero)
+        {
+        case 0:
+        {
+        numero==0;
+        break;
+        }
+            case 1:
+            for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].saldo<TIMES[j].saldo)
+                    {
+                    TIMES[32] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[32];
+                    }
+
+                }
+            }
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++){
+
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        case 2:
+                for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].gols<TIMES[j].gols)
+                    {
+                    TIMES[32] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[32];
+                    }
+                }
+            }
+
+
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++)
+            {
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        case 3:
+
+                 for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].golsSofridos<TIMES[j].golsSofridos)
+                    {
+                    TIMES[32] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[32];
+                    }
+
+                }
+            }
+
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++)
+            {
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        case 4:
+            for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].vitorias<TIMES[j].vitorias)
+                    {
+                    TIMES[33] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[33];
+                    }
+                }
+            }
+
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++)
+            {
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        case 5:
+            for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].derrotas<TIMES[j].derrotas)
+                    {
+                    TIMES[32] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[32];
+                    }
+                }
+            }
+
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++)
+            {
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        case 6:
+            for(i=0;i<32;i++)
+            {
+                for(j=i+1;j<32;j++)
+                {
+                    if(TIMES[i].empates<TIMES[j].empates)
+                    {
+                    TIMES[32] = TIMES[i];
+                    TIMES[i]=TIMES[j];
+                    TIMES[j]=TIMES[32];
+                    }
+                }
+            }
+
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+                printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+               for(i = 0; i < 32; i++)
+            {
+                printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[i].equipes, TIMES[i].pontos, TIMES[i].saldo, TIMES[i].gols, TIMES[i].golsSofridos, TIMES[i].vitorias, TIMES[i].derrotas, TIMES[i].empates);
+                printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            }
+        system("pause");
+        system("cls");
+        break;
+
+        default:
+        printf("\n\nOPÇÃO INVÁLIDA\n\n");
+        system("pause");
+        system("cls");
+
+        }
+
+        }while(numero!=0);
+
+
 }
+
+
