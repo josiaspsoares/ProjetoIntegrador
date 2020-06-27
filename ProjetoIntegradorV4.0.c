@@ -367,7 +367,7 @@ int main(){
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(4, PartidasQuartas, 2);
+                                    cadastroPartidasAutomatico(4, PartidasQuartas, 3);
                                     quartasCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -441,7 +441,7 @@ int main(){
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(2, PartidasSemifinais, 2);
+                                    cadastroPartidasAutomatico(2, PartidasSemifinais, 4);
                                     semifinaisCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -514,7 +514,7 @@ int main(){
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico(2, PartidaTerceiro, 2);
+                                    cadastroPartidasAutomatico(1, PartidaTerceiro, 5);
                                     terceiroCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -578,7 +578,7 @@ int main(){
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
-                                    cadastroPartidasAutomatico( 2, PartidaFinal, 2);
+                                    cadastroPartidasAutomatico( 1, PartidaFinal, 6);
                                     finalCadastrada = 1;
                                 }
                                 else if(opcao == '2'){
@@ -781,7 +781,156 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         armazenarDadosTimes();
         system("cls");
     }
+    else if(arquivo == 3){
+        FILE *group = fopen("LocaisQuartas.txt", "rb");
+        FILE *day = fopen("DatasQuartas.txt", "rb");
+        FILE *hour = fopen("HorasQuartas.txt", "rb");
 
+         for(i = 0; i < tamanho; i++){
+            fgets(Partida[i].localJogo, 50, group);
+            len = strlen(Partida[i].localJogo) - 1;
+            if (Partida[i].localJogo[len] == '\n')
+                Partida[i].localJogo[len] = '\0';
+
+            fgets(Partida[i].dataJogo, 50, day);
+            len = strlen(Partida[i].dataJogo) - 1;
+            if (Partida[i].dataJogo[len] == '\n')
+                Partida[i].dataJogo[len] = '\0';
+
+            fgets(Partida[i].horaJogo, 50, hour);
+            len = strlen(Partida[i].horaJogo) - 1;
+            if (Partida[i].horaJogo[len] == '\n')
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        for(i = 0; i < tamanho; i++){
+            len = strlen(Partida[i].localJogo) - 1;
+                Partida[i].localJogo[len] = '\0';
+            len = strlen(Partida[i].dataJogo) - 1;
+                Partida[i].dataJogo[len] = '\0';
+            len = strlen(Partida[i].horaJogo) - 1;
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        fclose(group);
+        fclose(day);
+        fclose(hour);
+        armazenarDadosTimes();
+        system("cls");
+    }
+     else if(arquivo == 4){
+        FILE *group = fopen("LocaisSemifinais.txt", "rb");
+        FILE *day = fopen("DatasSemifinais.txt", "rb");
+        FILE *hour = fopen("HorasSemifinais.txt", "rb");
+
+         for(i = 0; i < tamanho; i++){
+            fgets(Partida[i].localJogo, 50, group);
+            len = strlen(Partida[i].localJogo) - 1;
+            if (Partida[i].localJogo[len] == '\n')
+                Partida[i].localJogo[len] = '\0';
+
+            fgets(Partida[i].dataJogo, 50, day);
+            len = strlen(Partida[i].dataJogo) - 1;
+            if (Partida[i].dataJogo[len] == '\n')
+                Partida[i].dataJogo[len] = '\0';
+
+            fgets(Partida[i].horaJogo, 50, hour);
+            len = strlen(Partida[i].horaJogo) - 1;
+            if (Partida[i].horaJogo[len] == '\n')
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        for(i = 0; i < tamanho; i++){
+            len = strlen(Partida[i].localJogo) - 1;
+                Partida[i].localJogo[len] = '\0';
+            len = strlen(Partida[i].dataJogo) - 1;
+                Partida[i].dataJogo[len] = '\0';
+            len = strlen(Partida[i].horaJogo) - 1;
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        fclose(group);
+        fclose(day);
+        fclose(hour);
+        armazenarDadosTimes();
+        system("cls");
+    }
+    else if(arquivo == 5){
+        FILE *group = fopen("LocalTerceiro.txt", "rb");
+        FILE *day = fopen("DataTerceiro.txt", "rb");
+        FILE *hour = fopen("HoraTerceiro.txt", "rb");
+
+         for(i = 0; i < tamanho; i++){
+            fgets(Partida[i].localJogo, 50, group);
+            len = strlen(Partida[i].localJogo) - 1;
+            if (Partida[i].localJogo[len] == '\n')
+                Partida[i].localJogo[len] = '\0';
+
+            fgets(Partida[i].dataJogo, 50, day);
+            len = strlen(Partida[i].dataJogo) - 1;
+            if (Partida[i].dataJogo[len] == '\n')
+                Partida[i].dataJogo[len] = '\0';
+
+            fgets(Partida[i].horaJogo, 50, hour);
+            len = strlen(Partida[i].horaJogo) - 1;
+            if (Partida[i].horaJogo[len] == '\n')
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        for(i = 0; i < tamanho; i++){
+            len = strlen(Partida[i].localJogo) - 1;
+                Partida[i].localJogo[len] = '\0';
+            len = strlen(Partida[i].dataJogo) - 1;
+                Partida[i].dataJogo[len] = '\0';
+            len = strlen(Partida[i].horaJogo) - 1;
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        fclose(group);
+        fclose(day);
+        fclose(hour);
+        armazenarDadosTimes();
+        system("cls");
+    }
+    else if(arquivo == 6){
+        FILE *group = fopen("LocalFinal.txt", "rb");
+        FILE *day = fopen("DataFinal.txt", "rb");
+        FILE *hour = fopen("HoraFinal.txt", "rb");
+
+         for(i = 0; i < tamanho; i++){
+            fgets(Partida[i].localJogo, 50, group);
+            len = strlen(Partida[i].localJogo) - 1;
+            if (Partida[i].localJogo[len] == '\n')
+                Partida[i].localJogo[len] = '\0';
+
+            fgets(Partida[i].dataJogo, 50, day);
+            len = strlen(Partida[i].dataJogo) - 1;
+            if (Partida[i].dataJogo[len] == '\n')
+                Partida[i].dataJogo[len] = '\0';
+
+            fgets(Partida[i].horaJogo, 50, hour);
+            len = strlen(Partida[i].horaJogo) - 1;
+            if (Partida[i].horaJogo[len] == '\n')
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        for(i = 0; i < tamanho; i++){
+            len = strlen(Partida[i].localJogo) - 1;
+                Partida[i].localJogo[len] = '\0';
+            len = strlen(Partida[i].dataJogo) - 1;
+                Partida[i].dataJogo[len] = '\0';
+            len = strlen(Partida[i].horaJogo) - 1;
+                Partida[i].horaJogo[len] = '\0';
+        }
+
+        fclose(group);
+        fclose(day);
+        fclose(hour);
+        armazenarDadosTimes();
+        system("cls");
+    }
+    
+    
 }
 
 void cadastroPartidasManualmente(int tamanho, PLAY *Partida, DATA *Fase){
@@ -1592,9 +1741,12 @@ void realizarQuartas(){
         do{
         	system("cls");
          	system("color 0F");
-            printf( "\t*** REALIZAR JOGOS - OITAVAS DE FINAL ***\n");
+            printf( "\t*** REALIZAR JOGOS - QUARTAS DE FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
+            printf("\nDIA: %s",PartidasQuartas[numJogo - 1].dataJogo);
+            printf("\nLOCAL: %s",PartidasQuartas[numJogo - 1].localJogo);
+            printf("\nHORARIO: %s\n",PartidasQuartas[numJogo - 1].horaJogo);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Quartas[i].equipes));
             fflush(stdin);
@@ -1712,6 +1864,9 @@ void realizarSemifinais(){
             printf( "\t*** REALIZAR JOGOS - SEMIFINAIS ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
+            printf("\nDIA: %s",PartidasSemifinais[numJogo - 1].dataJogo);
+            printf("\nLOCAL: %s",PartidasSemifinais[numJogo - 1].localJogo);
+            printf("\nHORARIO: %s\n",PartidasSemifinais[numJogo - 1].horaJogo);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Semifinais[i].equipes));
             fflush(stdin);
@@ -1833,6 +1988,9 @@ void realizarDisputaTerceiro(){
             printf( "\t*** REALIZAR JOGO - DISPUTA PELO 3° LUGAR ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
+            printf("\nDIA: %s",PartidaTerceiro[numJogo - 1].dataJogo);
+            printf("\nLOCAL: %s",PartidaTerceiro[numJogo - 1].localJogo);
+            printf("\nHORARIO: %s\n",PartidaTerceiro[numJogo - 1].horaJogo);
 
             printf("\n  -> Gols do(a) %s: ", strupr(DisputaTerceiro[i].equipes));
             fflush(stdin);
@@ -1952,6 +2110,9 @@ void realizarFinal(){
             printf( "\t*** REALIZAR JOGO - FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
+            printf("\nDIA: %s",PartidaFinal[numJogo - 1].dataJogo);
+            printf("\nLOCAL: %s",PartidaFinal[numJogo - 1].localJogo);
+            printf("\nHORARIO: %s\n",PartidaFinal[numJogo - 1].horaJogo);
 
             printf("\n  -> Gols do(a) %s: ", strupr(Final[i].equipes));
             fflush(stdin);
