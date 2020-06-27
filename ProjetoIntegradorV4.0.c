@@ -104,6 +104,7 @@ void ordenaGrupoDecrescente(int t1, int t2);
 void ordenaGrupoSaldo(int t3, int t4);
 void ordenaGrupoGols(int t3, int t4);
 void ordenaGrupoGolsSofridos(int t3, int t4);
+void armazenarTabelaGeral(int tamanho, DATA *Fase);
 void PreencherCopia();
 void OrdenarSaldo();
 void OrdenarGols();
@@ -242,6 +243,7 @@ int main(){
                             }
                             else{
                                 realizarFaseDeGrupos();
+                                PreencherCopia();
                                 faseGruposRealizada = 1;
                             }
                         };break;
@@ -649,37 +651,31 @@ int main(){
 
                     switch(opcao){
                         case '1': {
-                            PreencherCopia();
                             OrdenarSaldo();
                             exibirTabelaGeral();
                         }break;
 
                         case '2': {
-                            PreencherCopia();
                             OrdenarGols();
                             exibirTabelaGeral();
                         }break;
 
                         case '3':{
-                            PreencherCopia();
                             OrdenarGolsSofridos();
                             exibirTabelaGeral();
                         }break;
 
                         case '4':{
-                            PreencherCopia();
                             OrdenarVitorias();
                             exibirTabelaGeral();
                         }break;
 
                         case '5':{
-                            PreencherCopia();
                             OrdenarDerrotas();
                             exibirTabelaGeral();
                         }break;
 
                         case '6':{
-                            PreencherCopia();
                             OrdenarEmpates();
                             exibirTabelaGeral();
                         }break;
@@ -1721,6 +1717,12 @@ void realizarOitavas(){
 
         if((Oitavas[i].gols) >  (Oitavas[i + 1].gols)){
             Quartas[j] = Oitavas[i];
+            Oitavas[i].vitorias = 1;
+            Oitavas[i + 1].derrotas = 1;
+            Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
+            Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
+            Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
+            Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
             j++;
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
             printf("\n");
@@ -1729,6 +1731,12 @@ void realizarOitavas(){
         }
         else if((Oitavas[i + 1].gols) >  (Oitavas[i].gols)){
             Quartas[j] = Oitavas[i + 1];
+            Oitavas[i + 1].vitorias = 1;
+            Oitavas[i].derrotas = 1;
+            Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
+            Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
+            Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
+            Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
             j++;
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i + 1].equipes));
             printf("\n");
@@ -1772,6 +1780,12 @@ void realizarOitavas(){
 
             if((penaltes1) >  (penaltes2)){
                 Quartas[j] = Oitavas[i];
+                Oitavas[i].vitorias = 1;
+                Oitavas[i + 1].derrotas = 1;
+                Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
+                Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
+                Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
+                Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
                 j++;
 
                 printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
@@ -1781,6 +1795,12 @@ void realizarOitavas(){
             }
             else if((penaltes2) >  (penaltes1)){
                 Quartas[j] = Oitavas[i + 1];
+                Oitavas[i + 1].vitorias = 1;
+                Oitavas[i].derrotas = 1;
+                Oitavas[i].golsSofridos = Oitavas[i + 1].gols;
+                Oitavas[i + 1].golsSofridos = Oitavas[i].gols;
+                Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
+                Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
                 j++;
 
                 printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Oitavas[i + 1].equipes));
@@ -1794,6 +1814,16 @@ void realizarOitavas(){
         system("cls");
 
     }
+
+    for(i = 0; i < 16; i++){
+        TIMES[Oitavas[i].id].saldo += Oitavas[i].saldo;
+        TIMES[Oitavas[i].id].gols += Oitavas[i].gols;
+        TIMES[Oitavas[i].id].golsSofridos += Oitavas[i].golsSofridos;
+        TIMES[Oitavas[i].id].vitorias += Oitavas[i].vitorias;
+        TIMES[Oitavas[i].id].derrotas += Oitavas[i].derrotas;
+        TIMES[Oitavas[i].id].empates += Oitavas[i].empates;
+    }
+    
 
 }
 
@@ -2300,6 +2330,19 @@ void exibirPodio(){
     system("pause");
 }
 
+void armazenarTabelaGeral(int tamanho, DATA *Fase){
+    int i;
+
+    for(i = 0; i < tamanho; i++){
+        TIMES[Fase[i].id].saldo += Fase[i].saldo;
+        TIMES[Fase[i].id].gols += Fase[i].gols;
+        TIMES[Fase[i].id].golsSofridos += Fase[i].golsSofridos;
+        TIMES[Fase[i].id].vitorias += Fase[i].vitorias;
+        TIMES[Fase[i].id].derrotas += Fase[i].derrotas;
+        TIMES[Fase[i].id].empates += Fase[i].empates;
+    }
+}
+
 void PreencherCopia()
 {
     int i;
@@ -2308,14 +2351,14 @@ void PreencherCopia()
     for(i=0;i<32;i++)
         {
             strcpy(TIMES[i].equipes,CadastroGrupos[i].equipes);
-            TIMES[i].derrotas=CadastroGrupos[i].derrotas;
-            TIMES[i].empates=CadastroGrupos[i].empates;
-            TIMES[i].gols=CadastroGrupos[i].gols;
-            TIMES[i].golsSofridos=CadastroGrupos[i].golsSofridos;
-            TIMES[i].id=CadastroGrupos[i].id;
-            TIMES[i].pontos=CadastroGrupos[i].pontos;
-            TIMES[i].saldo=CadastroGrupos[i].saldo;
-            TIMES[i].vitorias=CadastroGrupos[i].vitorias;
+            TIMES[i].derrotas+=CadastroGrupos[i].derrotas;
+            TIMES[i].empates+=CadastroGrupos[i].empates;
+            TIMES[i].gols+=CadastroGrupos[i].gols;
+            TIMES[i].golsSofridos+=CadastroGrupos[i].golsSofridos;
+            TIMES[i].id = CadastroGrupos[i].id;
+            TIMES[i].pontos+=CadastroGrupos[i].pontos;
+            TIMES[i].saldo+=CadastroGrupos[i].saldo;
+            TIMES[i].vitorias+=CadastroGrupos[i].vitorias;
         }
 }
 
