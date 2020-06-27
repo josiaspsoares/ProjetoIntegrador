@@ -2351,14 +2351,14 @@ void PreencherCopia()
     for(i=0;i<32;i++)
         {
             strcpy(TIMES[i].equipes,CadastroGrupos[i].equipes);
-            TIMES[i].derrotas+=CadastroGrupos[i].derrotas;
-            TIMES[i].empates+=CadastroGrupos[i].empates;
-            TIMES[i].gols+=CadastroGrupos[i].gols;
-            TIMES[i].golsSofridos+=CadastroGrupos[i].golsSofridos;
+            TIMES[i].derrotas=CadastroGrupos[i].derrotas;
+            TIMES[i].empates=CadastroGrupos[i].empates;
+            TIMES[i].gols=CadastroGrupos[i].gols;
+            TIMES[i].golsSofridos=CadastroGrupos[i].golsSofridos;
             TIMES[i].id = CadastroGrupos[i].id;
-            TIMES[i].pontos+=CadastroGrupos[i].pontos;
-            TIMES[i].saldo+=CadastroGrupos[i].saldo;
-            TIMES[i].vitorias+=CadastroGrupos[i].vitorias;
+            TIMES[i].pontos=CadastroGrupos[i].pontos;
+            TIMES[i].saldo=CadastroGrupos[i].saldo;
+            TIMES[i].vitorias=CadastroGrupos[i].vitorias;
         }
 }
 
