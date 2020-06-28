@@ -9,7 +9,6 @@
 #include <unistd.h>
 #endif
 #include "erroFunctions.h"
-#include "definicaoCores.h"
 
 int cadastroTimesConcluido = 0;
 int faseGruposCadastrada = 0;
@@ -114,7 +113,7 @@ void OrdenarDerrotas();
 void OrdenarEmpates();
 
 int main(){
-    system("color F");
+    system("color 3F");
 
 
     setlocale(LC_ALL, "Portuguese");
@@ -133,12 +132,18 @@ int main(){
         printf(" 5) SEMIFINAIS.\n");
         printf(" 6) DISPUTA PELO 3° LUGAR.\n");
         printf(" 7) FINAL.\n");
-        printf(" 8) ESTATÍSTICAS.\n\n");
+        printf(" 8) ESTATÍSTICAS.\n");
 
         do {
-            printf("OPÇÃO: ");
+            printf("\n\nOPÇÃO: ");
             fflush(stdin);
             scanf("%d", &opcao);
+            if (opcao!=0 && opcao!=1 && opcao!=2 && opcao!=3 && opcao!=4 && opcao!=5 && opcao!=6 && opcao!=7 && opcao!=8){
+                printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                system("color 4f");
+                Sleep(400);
+                system("color 3f");
+            }
         }while (opcao!=0 && opcao!=1 && opcao!=2 && opcao!=3 && opcao!=4 && opcao!=5 && opcao!=6 && opcao!=7 && opcao!=8);
 
         switch (opcao){
@@ -149,14 +154,20 @@ int main(){
                     system("cls");
                     printf("\n\t**** CADASTRO DE TIMES***\n");
                     printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                    printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                    printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                     do {
-                        printf( "OPÇÃO: ");
+                         printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='1' && opcao!='2'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='1' && opcao!='2');
-                    
+
                     system("cls");
                     if (opcao=='1'){
                         cadastrarTimesAutomatico();
@@ -182,12 +193,18 @@ int main(){
                     printf(" 2 - CADASTRAR JOGOS DA FASE DE GRUPOS.\n");
                     printf(" 3 - REALIZAR JOGOS DA FASE DE GRUPOS.\n");
                     printf(" 4 - EXIBIR TABELA DA FASE DE GRUPOS.\n");
-                    printf(" 5 - EXIBIR CLASSIFICADOS PARA AS OITAVAS DE FINAL.\n\n");
+                    printf(" 5 - EXIBIR CLASSIFICADOS PARA AS OITAVAS DE FINAL.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");;
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4'&& opcao!= '5'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4'&& opcao!= '5');
 
                     switch(opcao){
@@ -209,12 +226,18 @@ int main(){
                             else if(faseGruposCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -262,7 +285,9 @@ int main(){
                                 erro3("FASE DE GRUPOS");
                             }
                             else{
+                                system("color 2F");
                                 classificados(16, Oitavas);
+                                system("color 3F");
                             }
                         }
                         default: break;
@@ -278,12 +303,18 @@ int main(){
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
-                    printf(" 3 - EXIBIR CLASSIFICADOS PARA AS QUARTAS DE FINAL.\n\n");
+                    printf(" 3 - EXIBIR CLASSIFICADOS PARA AS QUARTAS DE FINAL.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3');
 
                     switch(opcao){
@@ -296,12 +327,18 @@ int main(){
                             else if(oitavasCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -336,7 +373,9 @@ int main(){
                                 erro5("OITAVAS DE FINAL");
                             }
                             else{
+                                system("color 2f");
                                 classificados(8, Quartas);
+                                system("color 3f");
                             }
                         }break;
                         default: break;
@@ -351,12 +390,18 @@ int main(){
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
-                    printf(" 3 - EXIBIR CLASSIFICADOS PARA AS SEMIFINAIS.\n\n");
+                    printf(" 3 - EXIBIR CLASSIFICADOS PARA AS SEMIFINAIS.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3');
 
                     switch(opcao){
@@ -369,12 +414,18 @@ int main(){
                             else if(quartasCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -409,7 +460,9 @@ int main(){
                                 erro5("QUARTAS DE FINAL");
                             }
                             else{
+                                system("color 2f");
                                 classificados(4, Semifinais);
+                                system("color 3f");
                             }
                         }break;
                         default: break;
@@ -425,12 +478,18 @@ int main(){
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGOS.\n");
                     printf(" 2 - REALIZAR JOGOS.\n");
-                    printf(" 3 - EXIBIR CLASSIFICADOS PARA A FINAL .\n\n");
+                    printf(" 3 - EXIBIR CLASSIFICADOS PARA A FINAL .\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3');
 
                     switch(opcao){
@@ -443,12 +502,18 @@ int main(){
                             else if(semifinaisCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -483,7 +548,9 @@ int main(){
                                 erro5("SEMIFINAIS");
                             }
                             else{
+                                system("color 2f");
                                 classificados(2, Final);
+                                system("color 3f");
                             }
                         }break;
                         default: break;
@@ -498,12 +565,18 @@ int main(){
                     printf("\n\t****  DISPUTA PELO TERCEIRO LUGAR  ***\n\n");
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGO.\n");
-                    printf(" 2 - REALIZAR JOGO.\n\n");
+                    printf(" 2 - REALIZAR JOGO.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2');
 
                     switch(opcao){
@@ -516,12 +589,18 @@ int main(){
                             else if(terceiroCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -562,12 +641,18 @@ int main(){
                     printf(" 0 - SAIR.\n");
                     printf(" 1 - CADASTRAR JOGO.\n");
                     printf(" 2 - REALIZAR JOGO.\n");
-                    printf(" 3 - PÓDIO.\n\n");
+                    printf(" 3 - PÓDIO.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3');
 
                     switch(opcao){
@@ -580,12 +665,18 @@ int main(){
                             else if(finalCadastrada == 0){
                                 printf("\n\t**** CADASTRO DE INFORMAÇÕES***\n");
                                 printf( "\n\nVOCÊ DESEJA CADASTRAR AUTOMATICAMENTE OU MANUALMENTE?\n\n");
-                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n\n");
+                                printf(" > Tecle 1 AUTOMATICAMENTE\n > Tecle 2 MANUALMENTE\n");
 
                                 do {
-                                    printf( "OPÇÃO: ");
+                                    printf("\n\nOPÇÃO: ");
                                     fflush(stdin);
                                     scanf("%c", &opcao);
+                                    if (opcao!='1' && opcao!='2'){
+                                        printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                                        system("color 4f");
+                                        Sleep(400);
+                                        system("color 3f");
+                                    }
                                 }while (opcao!='1' && opcao!='2');
 
                                 if (opcao=='1'){
@@ -639,12 +730,18 @@ int main(){
                     printf(" 3 - GOLS SOFRIDOS.\n");
                     printf(" 4 - VITORIAS\n");
                     printf(" 5 - DERROTAS.\n");
-                    printf(" 6 - EMPATES.\n\n");
+                    printf(" 6 - EMPATES.\n");
 
                     do {
-                        printf("OPÇÃO: ");
+                        printf("\n\nOPÇÃO: ");
                         fflush(stdin);
                         scanf("%c", &opcao);
+                        if (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4' && opcao!= '5' && opcao!= '6'){
+                            printf("\nOPÇÃO INVÁLIDA. ESCOLHA UMA OPÇÃO DO MENU.");
+                            system("color 4f");
+                            Sleep(400);
+                            system("color 3f");
+                        }
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4' && opcao!= '5' && opcao!= '6');
 
                     system("cls");
@@ -710,7 +807,7 @@ void zerarVariaveis(int tamanho, DATA *FaseZerar){
         FaseZerar[i].saldo = 0;
 	}
 }
-//************************************************************************************************* QUAL O OBJETIVO DESSA FUNÇÃO?
+
 void armazenarDadosTimes(){
     FILE *data = fopen("dadosTimes.txt", "wb");
     int i;
@@ -729,7 +826,6 @@ void armazenarDadosTimes(){
 
 	fclose(geral);
 }
-//********************************************************************************************************************
 
 void cadastrarTimesManual(){
     int i, o;
@@ -994,8 +1090,8 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         armazenarDadosTimes();
         system("cls");
     }
-    
-    
+
+
 }
 
 void cadastroPartidasManualmente(int tamanho, PLAY *Partida, DATA *Fase){
@@ -1682,10 +1778,11 @@ void realizarOitavas(){
     for(i = 0, j = 0; i < 16; i += 2, numJogo++){
 
         char opcao;
+        system("color 3F");
 
         do{
         	system("cls");
-         	system("color 0F");
+         	system("color 3F");
             printf( "\t*** REALIZAR JOGOS - OITAVAS DE FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, Oitavas[i].gols, Oitavas[i + 1].gols, Oitavas[i + 1].equipes);
@@ -1724,6 +1821,7 @@ void realizarOitavas(){
             Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
             Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
             printf("\n");
             system("pause");
@@ -1738,20 +1836,21 @@ void realizarOitavas(){
             Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
             Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i + 1].equipes));
             printf("\n");
             system("pause");
             system("cls");
         }
         else {
-            system("color 0F");
+         	system("color 3F");
             system("cls");
             penaltes1 = 0;
             penaltes2 = 0;
 
         	do{
                system("cls");
-                system("color 0F");
+                system("color 6F");
                 printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
                 printf( "\n\t< %s [%d] x [%d] %s >\n",Oitavas[i].equipes, penaltes1, penaltes2, Oitavas[i + 1].equipes);
@@ -1774,6 +1873,8 @@ void realizarOitavas(){
                 if(opcao != 'S' && opcao != 's'){
                     system("color C");
                     system("cls");
+                    system("color 3f");
+
                 }
 
          	}while(opcao != 'S' && opcao != 's' || penaltes1 == penaltes2 );
@@ -1788,6 +1889,7 @@ void realizarOitavas(){
                 Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
                 j++;
 
+                system("color 2f");
                 printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i].equipes));
                 printf("\n");
                 system("pause");
@@ -1802,7 +1904,7 @@ void realizarOitavas(){
                 Oitavas[i].saldo = Oitavas[i].gols -  Oitavas[i + 1].gols;
                 Oitavas[i + 1].saldo = Oitavas[i + 1].gols -  Oitavas[i].gols;
                 j++;
-
+                system("color 2f");
                 printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Oitavas[i + 1].equipes));
                 printf("\n");
                 system("pause");
@@ -1810,7 +1912,7 @@ void realizarOitavas(){
             }
         }
 
-        system("color 0F");
+        system("color 3F");
         system("cls");
 
     }
@@ -1823,7 +1925,7 @@ void realizarOitavas(){
         TIMES[Oitavas[i].id].derrotas += Oitavas[i].derrotas;
         TIMES[Oitavas[i].id].empates += Oitavas[i].empates;
     }
-    
+
 
 }
 
@@ -1839,7 +1941,7 @@ void realizarQuartas(){
 
         do{
         	system("cls");
-         	system("color 0F");
+         	system("color 3F");
             printf( "\t*** REALIZAR JOGOS - QUARTAS DE FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, Quartas[i].gols, Quartas[i + 1].gols, Quartas[i + 1].equipes);
@@ -1872,6 +1974,7 @@ void realizarQuartas(){
         if((Quartas[i].gols) >  (Quartas[i + 1].gols)){
             Semifinais[j] = Quartas[i];
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i].equipes));
             printf("\n");
             system("pause");
@@ -1880,20 +1983,21 @@ void realizarQuartas(){
         else if((Quartas[i + 1].gols) >  (Quartas[i].gols)){
             Semifinais[j] = Quartas[i + 1];
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i + 1].equipes));
             printf("\n");
             system("pause");
             system("cls");
         }
         else {
-            system("color 0F");
+            system("color 2F");
             system("cls");
             penaltes1 = 0;
             penaltes2 = 0;
 
         	do{
                system("cls");
-                system("color 0F");
+                system("color 6F");
                 printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
                 printf( "\n\t< %s [%d] x [%d] %s >\n",Quartas[i].equipes, penaltes1, penaltes2, Quartas[i + 1].equipes);
@@ -1914,7 +2018,7 @@ void realizarQuartas(){
                 scanf("%c", &opcao);
 
                 if(opcao != 'S' && opcao != 's'){
-                    system("color C");
+                    system("color 3f");
                     system("cls");
                 }
 
@@ -1923,7 +2027,7 @@ void realizarQuartas(){
             if((penaltes1) >  (penaltes2)){
                 Semifinais[j] = Quartas[i];
                 j++;
-
+                system("color 2f");
                 printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i].equipes));
                 printf("\n");
                 system("pause");
@@ -1932,7 +2036,7 @@ void realizarQuartas(){
             else if((penaltes2) >  (penaltes1)){
                 Semifinais[j] = Quartas[i + 1];
                 j++;
-
+                system("color 2f");
                 printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Quartas[i + 1].equipes));
                 printf("\n");
                 system("pause");
@@ -1940,7 +2044,7 @@ void realizarQuartas(){
             }
         }
 
-        system("color 0F");
+        system("color 3F");
         system("cls");
 
     }
@@ -1959,7 +2063,7 @@ void realizarSemifinais(){
 
         do{
         	system("cls");
-         	system("color 0F");
+         	system("color 3F");
             printf( "\t*** REALIZAR JOGOS - SEMIFINAIS ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, Semifinais[i].gols, Semifinais[i + 1].gols, Semifinais[i + 1].equipes);
@@ -1983,7 +2087,7 @@ void realizarSemifinais(){
             scanf("%c", &opcao);
 
             if(opcao != 'I' && opcao != 'i'){
-               system("color C");
+               system("color 3f");
                system("cls");
          	}
 
@@ -1993,6 +2097,7 @@ void realizarSemifinais(){
             Final[j] = Semifinais[i];
             DisputaTerceiro[j] = Semifinais[i + 1];
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i].equipes));
             printf("\n");
             system("pause");
@@ -2002,20 +2107,21 @@ void realizarSemifinais(){
             Final[j] = Semifinais[i + 1];
             DisputaTerceiro[j] = Semifinais[i];
             j++;
+            system("color 2f");
             printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i + 1].equipes));
             printf("\n");
             system("pause");
             system("cls");
         }
         else {
-            system("color 0F");
+            system("color 3F");
             system("cls");
             penaltes1 = 0;
             penaltes2 = 0;
 
         	do{
                system("cls");
-                system("color 0F");
+                system("color 6F");
                 printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
                 printf( "\n\t< %s [%d] x [%d] %s >\n",Semifinais[i].equipes, penaltes1, penaltes2, Semifinais[i + 1].equipes);
@@ -2046,7 +2152,7 @@ void realizarSemifinais(){
                 Final[j] = Semifinais[i];
                 DisputaTerceiro[j] = Semifinais[i + 1];
                 j++;
-
+                system("color 2f");
                 printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i].equipes));
                 printf("\n");
                 system("pause");
@@ -2056,7 +2162,7 @@ void realizarSemifinais(){
                 Final[j] = Semifinais[i + 1];
                 DisputaTerceiro[j] = Semifinais[i];
                 j++;
-
+                system("color 2f");
                 printf( "\n> O(A) %s É FINALISTA <\n", strupr(Semifinais[i + 1].equipes));
                 printf("\n");
                 system("pause");
@@ -2064,7 +2170,7 @@ void realizarSemifinais(){
             }
         }
 
-        system("color 0F");
+        system("color 3F");
         system("cls");
 
     }
@@ -2083,7 +2189,7 @@ void realizarDisputaTerceiro(){
 
         do{
         	system("cls");
-         	system("color 0F");
+         	system("color 3F");
             printf( "\t*** REALIZAR JOGO - DISPUTA PELO 3° LUGAR ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, DisputaTerceiro[i].gols, DisputaTerceiro[i + 1].gols, DisputaTerceiro[i + 1].equipes);
@@ -2125,21 +2231,21 @@ void realizarDisputaTerceiro(){
         else if((DisputaTerceiro[i + 1].gols) >  (DisputaTerceiro[i].gols)){
             Podio[2] = DisputaTerceiro[i + 1];
             j++;
-
+            system("color 2f");
             printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i + 1].equipes));
             printf("\n");
             system("pause");
             system("cls");
         }
         else {
-            system("color 0F");
+            system("color 3F");
             system("cls");
             penaltes1 = 0;
             penaltes2 = 0;
 
         	do{
                system("cls");
-                system("color 0F");
+                system("color 6F");
                 printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
                 printf( "\n\t< %s [%d] x [%d] %s >\n",DisputaTerceiro[i].equipes, penaltes1, penaltes2, DisputaTerceiro[i + 1].equipes);
@@ -2169,7 +2275,7 @@ void realizarDisputaTerceiro(){
             if((penaltes1) >  (penaltes2)){
                 Podio[2] = DisputaTerceiro[i];
                 j++;
-
+                system("color 2f");
                 printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i].equipes));
                 printf("\n");
                 system("pause");
@@ -2178,7 +2284,7 @@ void realizarDisputaTerceiro(){
             else if((penaltes2) >  (penaltes1)){
                 Podio[2] = DisputaTerceiro[i + 1];
                 j++;
-
+                system("color 2f");
                 printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i + 1].equipes));
                 printf("\n");
                 system("pause");
@@ -2186,7 +2292,7 @@ void realizarDisputaTerceiro(){
             }
         }
 
-        system("color 0F");
+        system("color 3F");
         system("cls");
 
     }
@@ -2205,7 +2311,7 @@ void realizarFinal(){
 
         do{
         	system("cls");
-         	system("color 0F");
+         	system("color 3F");
             printf( "\t*** REALIZAR JOGO - FINAL ***\n");
             printf("\n\t\t  --- JOGO %d --- \n", numJogo );
             printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, Final[i].gols, Final[i + 1].gols, Final[i + 1].equipes);
@@ -2239,7 +2345,7 @@ void realizarFinal(){
             Podio[j] = Final[i];
             j++;
             Podio[j] = Final[i + 1];
-
+            system("color 2f");
             printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i].equipes));
             printf("\n");
             system("pause");
@@ -2249,21 +2355,21 @@ void realizarFinal(){
             Podio[j] = Final[i + 1];
             j++;
             Podio[j] = Final[i];
-
+            system("color 2f");
             printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i + 1].equipes));
             printf("\n");
             system("pause");
             system("cls");
         }
         else {
-            system("color 0F");
+            system("color 3f");
             system("cls");
             penaltes1 = 0;
             penaltes2 = 0;
 
         	do{
                system("cls");
-                system("color 0F");
+                system("color 6F");
                 printf("\t  *** DISPUTA POR PÊNALTES ***\n");
                 printf("\n\t\t--- JOGO %d --- \n", numJogo );
                 printf( "\n\t< %s [%d] x [%d] %s >\n",Final[i].equipes, penaltes1, penaltes2, Final[i + 1].equipes);
@@ -2294,7 +2400,7 @@ void realizarFinal(){
                 Podio[j] = Final[i];
                 j++;
                 Podio[j] = Final[i + 1];
-
+                system("color 2f");
                 printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i].equipes));
                 printf("\n");
                 system("pause");
@@ -2304,7 +2410,7 @@ void realizarFinal(){
                 Podio[j] = Final[i + 1];
                 j++;
                 Podio[j] = Final[i];
-
+                system("color 2f");
                 printf( "\n    >>> A SELEÇÃO CAMPEÃ É O(A) %s <<<\n", strupr(Final[i + 1].equipes));
                 printf("\n");
                 system("pause");
@@ -2312,7 +2418,7 @@ void realizarFinal(){
             }
         }
 
-        system("color 0F");
+        system("color 3F");
         system("cls");
 
     }
@@ -2320,13 +2426,23 @@ void realizarFinal(){
 }
 
 void exibirPodio(){
+    int i;
+
+    system("color 20");
 
     printf ("\t<<< PÓDIO DA COPA >>>\n\n");
     printf( " -> SELEÇÃO CAMPEÃ: %s\n", Podio[0].equipes);
     printf( " -> SELEÇÃO VICE-CAMPEÃ: %s\n", Podio[1].equipes);
     printf( " -> SELEÇÃO TERCEIRA-COLOCADA: %s\n", Podio[2].equipes);
 
-    printf("\n");
+    for (i=0; i<5;i++){
+        system("color 20");
+        Sleep(600);
+        system("color 2f");
+        Sleep(600);
+
+    }
+    printf("\n\n\n\n");
     system("pause");
 }
 
