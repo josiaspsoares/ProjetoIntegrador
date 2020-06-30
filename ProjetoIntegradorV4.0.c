@@ -112,7 +112,7 @@ int main(){
 
     zerarVariaveis(32, CadastroGrupos);
     zerarVariaveis(32, TabelaGeral);
-    zerarVariaveis(32, TIMES);
+    zerarVariaveis(33, TIMES);
 
     system("cls");
 
@@ -623,6 +623,7 @@ int main(){
                             else{
                                 realizarDisputaTerceiro();
                                 terceiroRealizada = 1;
+                                armazenarTabelaGeral(2, DisputaTerceiro);
                             }
                         };break;
                         default: break;
@@ -699,6 +700,7 @@ int main(){
                             else{
                                 realizarFinal();
                                 finalRealizada = 1;
+                                armazenarTabelaGeral(2, Final);
                             }
                         };break;
                         case '3': {
@@ -741,6 +743,8 @@ int main(){
                     }while (opcao!='0' && opcao!='1' && opcao!='2' && opcao!= '3' && opcao!= '4' && opcao!= '5' && opcao!= '6');
 
                     system("cls");
+
+                    zerarVariaveis(33, TIMES);
                     for(i = 0; i < 32; i++){
                         TIMES[i] = TabelaGeral[i];
                     }
@@ -1757,19 +1761,19 @@ void exibirTabelaGrupos(){
     int i, j;
     char grupo = 'A';
 
-    printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
-    printf("|                        .::Tabela Classificatória::.                       |\n");
-    printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+    printf("+----------------------------------------------------------------------------------+\n");
+    printf("|                            .::Tabela Classificatória::.                          |\n");
+    printf("+----------------------------------------------------------------------------------+\n");
 
     for(j = 0; j < 32; j += 4, grupo++){
-        printf("|                             .::GRUPO %c::.                                 |\n", grupo);
-        printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
-        printf("|       TIME       |   P   |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
-        printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+        printf("|                                  .::GRUPO %c::.                                  |\n", grupo);
+        printf("+------------------+--------+---------+--------+--------+--------+--------+--------+\n");
+        printf("|       TIME       |    P   |    SG   |   G+   |   G-   |    V   |    D   |    E   |\n");
+        printf("+------------------+--------+---------+--------+--------+--------+--------+--------+\n");
 
         for(i = j; i < j + 4; i += 1){
-            printf("|  %-15s |   %2d  |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", CadastroGrupos[i].equipes, CadastroGrupos[i].pontos, CadastroGrupos[i].saldo, CadastroGrupos[i].gols, CadastroGrupos[i].golsSofridos, CadastroGrupos[i].vitorias, CadastroGrupos[i].derrotas, CadastroGrupos[i].empates);
-            printf("+------------------+-------+--------+-------+-------+-------+-------+-------+\n");
+            printf("|  %-15s |  %3d   |  %3d    |  %3d   |  %3d   |  %3d   |  %3d   |  %3d   |\n", CadastroGrupos[i].equipes, CadastroGrupos[i].pontos, CadastroGrupos[i].saldo, CadastroGrupos[i].gols, CadastroGrupos[i].golsSofridos, CadastroGrupos[i].vitorias, CadastroGrupos[i].derrotas, CadastroGrupos[i].empates);
+            printf("+------------------+--------+---------+--------+--------+--------+--------+--------+\n");
         }
     }
 
@@ -2587,7 +2591,7 @@ void exibirPodio(){
         Sleep(600);
 
     }
-    printf("\n\n\n\n");
+    printf("\n\n");
     system("pause");
 }
 
@@ -2664,9 +2668,9 @@ void OrdenarVitorias(){
     for(i=0;i<32;i++){
         for(j=i+1;j<32;j++){
             if(TIMES[i].vitorias<TIMES[j].vitorias){
-                TIMES[33] = TIMES[i];
+                TIMES[32] = TIMES[i];
                 TIMES[i]=TIMES[j];
-                TIMES[j]=TIMES[33];
+                TIMES[j]=TIMES[32];
             }
         }
     }
@@ -2709,15 +2713,15 @@ void exibirTabelaGeral(){
     system("cls");
     int i, j;
 
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
-    printf("|                         .::Estatísticas::.                        |\n");
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
-    printf("|       TIME       |   SG   |   G+  |   G-  |   V   |   D   |   E   |\n");
-    printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
+    printf("+-------------------------------------------------------------------------+\n");
+    printf("|                            .::Estatísticas::.                           |\n");
+    printf("+------------------+---------+--------+--------+--------+--------+--------+\n");
+    printf("|       TIME       |    SG   |    G+  |   G-   |    V   |    D   |    E   |\n");
+    printf("+------------------+---------+--------+--------+--------+--------+--------+\n");
 
     for(j = 0; j < 32; j += 1){
-        printf("|  %-15s |   %2d   |   %2d  |   %2d  |   %2d  |   %2d  |   %2d  |\n", TIMES[j].equipes,TIMES[j].saldo,TIMES[j].gols,TIMES[j].golsSofridos,TIMES[j].vitorias,TIMES[j].derrotas, TIMES[j].empates);
-        printf("+------------------+--------+-------+-------+-------+-------+-------+\n");
+        printf("|  %-15s |   %3d   |   %3d  |   %3d  |   %3d  |   %3d  |   %3d  |\n", TIMES[j].equipes,TIMES[j].saldo,TIMES[j].gols,TIMES[j].golsSofridos,TIMES[j].vitorias,TIMES[j].derrotas, TIMES[j].empates);
+        printf("+------------------+---------+--------+--------+--------+--------+--------+\n");
     }
 
     printf("\n\n");
