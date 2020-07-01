@@ -1314,7 +1314,7 @@ void realizarFaseDeGrupos(){
             printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
-            printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
+            printf("\nHORARIO: %s\n\n",FaseGrupos[t].horaJogo);
             t++;
 
             if(automatico == 0){
@@ -1395,7 +1395,7 @@ void realizarFaseDeGrupos(){
             printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
-            printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
+            printf("\nHORARIO: %s\n\n",FaseGrupos[t].horaJogo);
             t++;
 
             if(automatico == 0){
@@ -1474,7 +1474,7 @@ void realizarFaseDeGrupos(){
             printf( "\n\t< %s [0] x [0] %s >\n", CadastroGrupos[c].equipes, CadastroGrupos[k].equipes);
             printf("\nDIA: %s",FaseGrupos[t].dataJogo);
             printf("\nLOCAL: %s",FaseGrupos[t].localJogo);
-            printf("\nHORARIO: %s\n",FaseGrupos[t].horaJogo);
+            printf("\nHORARIO: %s\n\n",FaseGrupos[t].horaJogo);
             t++;
 
             if(automatico == 0){
@@ -1651,7 +1651,7 @@ void processarJogos(){
             ordenaGrupoSaldo(i,i + 4);
         }
         else if(CadastroGrupos[i].pontos == CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos){
-            ordenaGrupoSaldo(i, i + 3);
+            ordenaGrupoSaldo(i, i + 2);
 
             if(CadastroGrupos[i].saldo == CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
                 ordenaGrupoGols(i, i + 3);
@@ -1686,7 +1686,7 @@ void processarJogos(){
 
         }
         else if(CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos == CadastroGrupos[i + 3].pontos){
-            ordenaGrupoSaldo(i + 1, i + 4);
+            ordenaGrupoSaldo(i + 1, i + 3);
 
             if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo == CadastroGrupos[i + 3].saldo){
                 ordenaGrupoGols(i + 1, i + 4);
@@ -1936,7 +1936,7 @@ void realizarOitavas(){
 
                 j++;
                 system("color 2f");
-                printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Oitavas[i + 1].equipes));
+                printf( "\n    >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Oitavas[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
@@ -2090,7 +2090,7 @@ void realizarQuartas(){
 
                 j++;
                 system("color 2f");
-                printf( "\n> O(A) %s FOI CLASSIFICADO(A) <\n", strupr(Quartas[i + 1].equipes));
+                printf( "\n     >>> O(A) %s FOI CLASSIFICADO(A) <<<\n", strupr(Quartas[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
@@ -2248,7 +2248,7 @@ void realizarSemifinais(){
 
                 j++;
                 system("color 2f");
-                printf( "\n> O(A) %s É FINALISTA <\n", strupr(Semifinais[i + 1].equipes));
+                printf( "\n    >>> O(A) %s É FINALISTA <<<\n", strupr(Semifinais[i + 1].equipes));
                 printf("\n");
                 system("pause");
                 system("cls");
