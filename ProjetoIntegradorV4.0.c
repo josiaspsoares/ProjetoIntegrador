@@ -8,7 +8,7 @@
 #else
 #include <unistd.h>
 #endif
-#include "erroFunctions.h"
+#include "funcoes/erroFunctions.h"
 
 // Variaveis para verificar se a etapa foi concluída
 
@@ -750,6 +750,7 @@ int main(){
                     }
 
                     switch(opcao){
+                        case '0': break;
                         case '1': {
                             OrdenarSaldo();
                             exibirTabelaGeral();
@@ -780,9 +781,7 @@ int main(){
                             exibirTabelaGeral();
                         }break;
 
-                        default:
-                        printf("OPÇÃO INVÁLIDA.\n\n");
-                        break;
+                        default:break;
                     }
 
                 }while(opcao != '0');
@@ -813,7 +812,7 @@ void zerarVariaveis(int tamanho, DATA *FaseZerar){
 
 // Armazenar os dados dos times nos arquivos
 void armazenarDadosTimes(){
-    FILE *data = fopen("dadosTimes.txt", "wb");
+    FILE *data = fopen("dados_times/dadosdados_times/Times.txt", "wb");
     int i;
 
     for(i = 0; i < 32; i++){
@@ -822,7 +821,7 @@ void armazenarDadosTimes(){
 
 	fclose(data);
 
-    FILE *geral = fopen("dadosGerais.txt", "wb");
+    FILE *geral = fopen("dados_times/dadosGerais.txt", "wb");
 
     for(i = 0; i < 32; i++){
 		fwrite(&TabelaGeral[i], sizeof(DATA), 1, data);
@@ -851,10 +850,10 @@ void cadastrarTimesManual(){
     system("cls");
 }
 
-// Inseri os times para a fase de grupos com base nos times presentes do arquivo Times.txt
+// Inseri os times para a fase de grupos com base nos times presentes do arquivo dados_times/Times.txt
 void cadastrarTimesAutomatico(){
 
-    FILE *team = fopen("Times.txt", "rb");
+    FILE *team = fopen("dados_times/Times.txt", "rb");
     int i, len;
 
     for(i = 0; i < 32; i++){
@@ -885,9 +884,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
     int i, len;
 
     if(arquivo == 1){
-        FILE *group = fopen("Locais.txt", "rb");
-        FILE *day = fopen("Datas.txt", "rb");
-        FILE *hour = fopen("Horas.txt", "rb");
+        FILE *group = fopen("dados_partidas/Locais.txt", "rb");
+        FILE *day = fopen("dados_partidas/Datas.txt", "rb");
+        FILE *hour = fopen("dados_partidas/Horas.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -922,9 +921,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         system("cls");
     }
     else if(arquivo == 2){
-        FILE *group = fopen("LocaisOitavas.txt", "rb");
-        FILE *day = fopen("DatasOitavas.txt", "rb");
-        FILE *hour = fopen("HorasOitavas.txt", "rb");
+        FILE *group = fopen("dados_partidas/LocaisOitavas.txt", "rb");
+        FILE *day = fopen("dados_partidas/DatasOitavas.txt", "rb");
+        FILE *hour = fopen("dados_partidas/HorasOitavas.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -959,9 +958,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         system("cls");
     }
     else if(arquivo == 3){
-        FILE *group = fopen("LocaisQuartas.txt", "rb");
-        FILE *day = fopen("DatasQuartas.txt", "rb");
-        FILE *hour = fopen("HorasQuartas.txt", "rb");
+        FILE *group = fopen("dados_partidas/LocaisQuartas.txt", "rb");
+        FILE *day = fopen("dados_partidas/DatasQuartas.txt", "rb");
+        FILE *hour = fopen("dados_partidas/HorasQuartas.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -996,9 +995,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         system("cls");
     }
      else if(arquivo == 4){
-        FILE *group = fopen("LocaisSemifinais.txt", "rb");
-        FILE *day = fopen("DatasSemifinais.txt", "rb");
-        FILE *hour = fopen("HorasSemifinais.txt", "rb");
+        FILE *group = fopen("dados_partidas/LocaisSemifinais.txt", "rb");
+        FILE *day = fopen("dados_partidas/DatasSemifinais.txt", "rb");
+        FILE *hour = fopen("dados_partidas/HorasSemifinais.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -1033,9 +1032,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         system("cls");
     }
     else if(arquivo == 5){
-        FILE *group = fopen("LocalTerceiro.txt", "rb");
-        FILE *day = fopen("DataTerceiro.txt", "rb");
-        FILE *hour = fopen("HoraTerceiro.txt", "rb");
+        FILE *group = fopen("dados_partidas/LocalTerceiro.txt", "rb");
+        FILE *day = fopen("dados_partidas/DataTerceiro.txt", "rb");
+        FILE *hour = fopen("dados_partidas/HoraTerceiro.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -1070,9 +1069,9 @@ void cadastroPartidasAutomatico(int tamanho, PLAY *Partida, int arquivo){
         system("cls");
     }
     else if(arquivo == 6){
-        FILE *group = fopen("LocalFinal.txt", "rb");
-        FILE *day = fopen("DataFinal.txt", "rb");
-        FILE *hour = fopen("HoraFinal.txt", "rb");
+        FILE *group = fopen("dados_partidas/LocalFinal.txt", "rb");
+        FILE *day = fopen("dados_partidas/DataFinal.txt", "rb");
+        FILE *hour = fopen("dados_partidas/HoraFinal.txt", "rb");
 
          for(i = 0; i < tamanho; i++){
             fgets(Partida[i].localJogo, 50, group);
@@ -1651,7 +1650,7 @@ void processarJogos(){
             ordenaGrupoSaldo(i,i + 4);
         }
         else if(CadastroGrupos[i].pontos == CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos){
-            ordenaGrupoSaldo(i, i + 2);
+            ordenaGrupoSaldo(i, i + 3);
 
             if(CadastroGrupos[i].saldo == CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
                 ordenaGrupoGols(i, i + 3);
@@ -1686,7 +1685,7 @@ void processarJogos(){
 
         }
         else if(CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos == CadastroGrupos[i + 3].pontos){
-            ordenaGrupoSaldo(i + 1, i + 3);
+            ordenaGrupoSaldo(i + 1, i + 4);
 
             if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo == CadastroGrupos[i + 3].saldo){
                 ordenaGrupoGols(i + 1, i + 4);
@@ -2315,7 +2314,7 @@ void realizarDisputaTerceiro(){
             DisputaTerceiro[i + 1].saldo = DisputaTerceiro[i + 1].gols -  DisputaTerceiro[i].gols;
 
             j++;
-
+            system("color 2f");
             printf( "\n    >>> O(A) TERCEIRO(A) COLOCADO(A) É O(A) %s <<<\n", strupr(DisputaTerceiro[i].equipes));
             printf("\n");
             system("pause");
