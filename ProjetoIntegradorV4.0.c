@@ -1555,8 +1555,8 @@ void  ordenaGrupoDecrescente(int t1, int t2){
     int i,j,temp = 0;
     DATA temp1;
 
-    for (  i = t1 ; i < t2   ; i ++){
-        for ( j = i + 1; j < t2 ; j ++){
+    for (  i = t1 ; i <= t2   ; i ++){
+        for ( j = i + 1; j <= t2 ; j ++){
             if (CadastroGrupos[i].pontos  < CadastroGrupos[j].pontos ){
                 temp = CadastroGrupos[i].pontos;
                 temp1 = CadastroGrupos[i];
@@ -1576,8 +1576,8 @@ void  ordenaGrupoSaldo(int t3, int t4){
     int i, j, tempX;
     DATA temp2;
 
-    for (  i = t3 ; i < t4   ; i ++){
-        for ( j = i + 1; j < t4 ; j ++){
+    for (  i = t3 ; i <= t4   ; i ++){
+        for ( j = i + 1; j <= t4 ; j ++){
             if (CadastroGrupos[i].saldo  < CadastroGrupos[j].saldo){
                 tempX = CadastroGrupos[i].saldo;
                 temp2 = CadastroGrupos[i];
@@ -1597,8 +1597,8 @@ void  ordenaGrupoGols(int t3, int t4){
     int i, j, tempX;
     DATA temp2;
 
-    for (  i = t3 ; i < t4   ; i ++){
-        for ( j = i + 1; j < t4 ; j ++){
+    for (  i = t3 ; i <= t4   ; i ++){
+        for ( j = i + 1; j <= t4 ; j ++){
             if (CadastroGrupos[i].gols  < CadastroGrupos[j].gols){
                 tempX = CadastroGrupos[i].gols;
                 temp2 = CadastroGrupos[i];
@@ -1618,8 +1618,8 @@ void  ordenaGrupoGolsSofridos(int t3, int t4){
     int i, j, tempX;
     DATA temp2;
 
-    for (  i = t3 ; i < t4   ; i ++){
-        for ( j = i + 1; j < t4 ; j ++){
+    for (  i = t3 ; i <= t4   ; i ++){
+        for ( j = i + 1; j <= t4 ; j ++){
             if (CadastroGrupos[i].golsSofridos > CadastroGrupos[j].golsSofridos){
                 tempX = CadastroGrupos[i].golsSofridos;
                 temp2 = CadastroGrupos[i];
@@ -1637,49 +1637,49 @@ void  ordenaGrupoGolsSofridos(int t3, int t4){
 void processarJogos(){
     int i = 0, j = 0;
 
-    ordenaGrupoDecrescente(0, 4);
-    ordenaGrupoDecrescente(4, 8);
-    ordenaGrupoDecrescente(8, 12);
-    ordenaGrupoDecrescente(12, 16);
-    ordenaGrupoDecrescente(16, 20);
-    ordenaGrupoDecrescente(20, 24);
-    ordenaGrupoDecrescente(24, 28);
-    ordenaGrupoDecrescente(28, 32);
+    ordenaGrupoDecrescente(0, 3);
+    ordenaGrupoDecrescente(4, 7);
+    ordenaGrupoDecrescente(8, 11);
+    ordenaGrupoDecrescente(12, 15);
+    ordenaGrupoDecrescente(16, 19);
+    ordenaGrupoDecrescente(20, 23);
+    ordenaGrupoDecrescente(24, 27);
+    ordenaGrupoDecrescente(28, 31);
 
     for(i = 0; i < 32; i +=4){
         if(CadastroGrupos[i].pontos == CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos == CadastroGrupos[i + 3].pontos){
-            ordenaGrupoSaldo(i,i + 4);
+            ordenaGrupoSaldo(i,i + 3);
         }
         else if(CadastroGrupos[i].pontos == CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos){
             ordenaGrupoSaldo(i, i + 2);
 
             if(CadastroGrupos[i].saldo == CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
-                ordenaGrupoGols(i, i + 3);
+                ordenaGrupoGols(i, i + 2);
 
                 if(CadastroGrupos[i].gols == CadastroGrupos[i + 1].gols == CadastroGrupos[i + 2].gols){
-                    ordenaGrupoGolsSofridos(i, i + 3);
-                }
-                else if(CadastroGrupos[i].gols == CadastroGrupos[i + 1].gols){
                     ordenaGrupoGolsSofridos(i, i + 2);
                 }
+                else if(CadastroGrupos[i].gols == CadastroGrupos[i + 1].gols){
+                    ordenaGrupoGolsSofridos(i, i + 1);
+                }
                 else if(CadastroGrupos[i + 1].gols == CadastroGrupos[i + 2].gols){
-                    ordenaGrupoGolsSofridos(i + 1, i + 3);
+                    ordenaGrupoGolsSofridos(i + 1, i + 2);
                 }
 
             }
             else if(CadastroGrupos[i].saldo == CadastroGrupos[i + 1].saldo){
-                ordenaGrupoGols(i, i + 2);
+                ordenaGrupoGols(i, i + 1);
 
                 if(CadastroGrupos[i].gols == CadastroGrupos[i + 1].gols){
-                    ordenaGrupoGolsSofridos(i, i + 2);
+                    ordenaGrupoGolsSofridos(i, i + 1);
                 }
 
             }
             else if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
-                ordenaGrupoGols(i + 1, i + 3);
+                ordenaGrupoGols(i + 1, i + 2);
 
                 if(CadastroGrupos[i + 1].gols == CadastroGrupos[i + 2].gols){
-                    ordenaGrupoGolsSofridos(i + 1, i + 3);
+                    ordenaGrupoGolsSofridos(i + 1, i + 2);
                 }
 
             }
@@ -1689,23 +1689,23 @@ void processarJogos(){
             ordenaGrupoSaldo(i + 1, i + 3);
 
             if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo == CadastroGrupos[i + 3].saldo){
-                ordenaGrupoGols(i + 1, i + 4);
-            }
-            else if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
                 ordenaGrupoGols(i + 1, i + 3);
             }
+            else if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
+                ordenaGrupoGols(i + 1, i + 2);
+            }
             else if(CadastroGrupos[i + 2].saldo == CadastroGrupos[i + 3].saldo){
-                ordenaGrupoGols(i + 2, i + 4);
+                ordenaGrupoGols(i + 2, i + 3);
             }
 
         }
         else if(CadastroGrupos[i + 1].pontos == CadastroGrupos[i + 2].pontos){
-            ordenaGrupoSaldo(i + 1, i + 3);
+            ordenaGrupoSaldo(i + 1, i + 2);
             if(CadastroGrupos[i + 1].saldo == CadastroGrupos[i + 2].saldo){
-                ordenaGrupoGols(i + 1, i + 3);
+                ordenaGrupoGols(i + 1, i + 2);
 
                 if(CadastroGrupos[i + 1].gols == CadastroGrupos[i + 2].gols){
-                    ordenaGrupoGolsSofridos(i + 1, i + 3);
+                    ordenaGrupoGolsSofridos(i + 1, i + 2);
                 }
 
             }
@@ -1723,12 +1723,12 @@ void processarJogos(){
                 }
             }
             if(CadastroGrupos[i + 2].pontos == CadastroGrupos[i + 3].pontos){
-                ordenaGrupoSaldo(i + 2, i + 4);
+                ordenaGrupoSaldo(i + 2, i + 3);
                 if(CadastroGrupos[i + 2].saldo == CadastroGrupos[i + 3].saldo){
-                    ordenaGrupoGols(i + 2, i + 4);
+                    ordenaGrupoGols(i + 2, i + 3);
 
                     if(CadastroGrupos[i + 2].gols == CadastroGrupos[i + 3].gols){
-                        ordenaGrupoGolsSofridos(i + 2, i + 4);
+                        ordenaGrupoGolsSofridos(i + 2, i + 3);
                     }
 
                 }
@@ -1766,7 +1766,7 @@ void exibirTabelaGrupos(){
     printf("+----------------------------------------------------------------------------------+\n");
 
     for(j = 0; j < 32; j += 4, grupo++){
-        printf("|                                  .::GRUPO %c::.                                  |\n", grupo);
+        printf("|                                   .::GRUPO %c::.                                  |\n", grupo);
         printf("+------------------+--------+---------+--------+--------+--------+--------+--------+\n");
         printf("|       TIME       |    P   |    SG   |   G+   |   G-   |    V   |    D   |    E   |\n");
         printf("+------------------+--------+---------+--------+--------+--------+--------+--------+\n");
@@ -2593,6 +2593,7 @@ void exibirPodio(){
     }
     printf("\n\n");
     system("pause");
+    system("color 3F");
 }
 
 void armazenarTabelaGeral(int tamanho, DATA Fase[]){
